@@ -5,31 +5,36 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
+from handler.index_handler import IndexHandler
+from handler.login_handler import LoginHandler, LogoutHandler
 from tornado.options import define, options
 
 define("port", default=8000, help="run on the given port", type=int)
 
 routes = [
-    (r"/", ""),  # 来自根路径的请求用 IndesHandlers 处理
-    (r"/qiwsir/(.*)", ""),
+    (r"/index", IndexHandler),  # 来自根路径的请求用 IndesHandlers 处理
+    (r"/login", LoginHandler),
+    (r"/logout", LoginHandler),
 ]
 
 
-class IndexHandler(tornado.web.RequestHandler):
-    def get(self):
-        greeting = self.get_argument('greeting', 'Hello')
-        self.write(greeting + ', welcome you to read: www.itdiffer.com')
+class Application(tornado.web.Application):
+    def __init__(self):
+        handlers = routes
+
+        settings = {
+            'template_path': 'templates',
+            'static_path': 'static',
+            "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+            "login_url": "/login"
+        }
+
+        tornado.web.Application.__init__(self, handlers, **settings)
 
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
-    app = tornado.web.Application(
-        handlers=[(r'/', IndexHandler), (r'/poem', MungedPageHandler)],
-        template_path=os.path.join(os.path.dirname(__file__), "templates"),
-        static_path=os.path.join(os.path.dirname(__file__), "static"),
-        debug=True
-    )
-    app = tornado.web.Application(handlers=[(r"/", IndexHandler)])
+    app = Application()
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()

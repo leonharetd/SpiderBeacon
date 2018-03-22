@@ -12,3 +12,9 @@ class IndexHandler(BaseHandler):
         self.render('index.html', user=self.current_user)
 
 
+
+class Index2Handler(BaseHandler):
+
+    def get(self):
+        self.render('index2.html')
+

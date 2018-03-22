@@ -5,7 +5,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
-from handler.index_handler import IndexHandler
+from handler.index_handler import IndexHandler, Index2Handler
 from handler.login_handler import LoginHandler, LogoutHandler
 from tornado.options import define, options
 
@@ -15,6 +15,7 @@ routes = [
     (r"/index", IndexHandler),  # 来自根路径的请求用 IndesHandlers 处理
     (r"/login", LoginHandler),
     (r"/logout", LoginHandler),
+    (r"/index2", Index2Handler)
 ]
 
 

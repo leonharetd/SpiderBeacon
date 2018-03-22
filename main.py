@@ -17,7 +17,7 @@ routes = [
     (r"/login", LoginHandler),
     (r"/logout", LoginHandler),
     (r"/index2", Index2Handler),
-    (r"/cluster_manger", ClusterManageHandler)
+    (r"/cluster_manage", ClusterManageHandler)
 ]
 
 

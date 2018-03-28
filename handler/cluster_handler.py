@@ -5,7 +5,7 @@ import tornado.web
 from base_handler import BaseHandler
 
 
-class ClusterManageHandler(BaseHandler):
+class ClusterDashBoardHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
@@ -22,4 +22,4 @@ class ClusterManageHandler(BaseHandler):
             {"name": "m1", "ip": "111.111.111.120", "cpu_avg": 52, "mem_avg": 23, "spider_num": 10, "status": True},
             {"name": "m1", "ip": "111.111.111.121", "cpu_avg": 51, "mem_avg": 54, "spider_num": 10, "status": True},
         ]
-        self.render('cluster_manage.html', cluster=cluster)
+        self.render('cluster_dashboard.html', cluster=cluster)

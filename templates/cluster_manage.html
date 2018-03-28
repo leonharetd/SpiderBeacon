@@ -10,26 +10,35 @@
 {% end block %}
 
 {% block content_body %}
+
 <!-- Main content -->
-    <section class="content">
+<section class="content">
       <div class="row">
         <div class="col-xs-12">
 
           <div class="box">
-            <div class="box-header">
-              <!-- <h3 class="box-title"></h3> -->
+              <div class="box-header">
+              <h3 class="box-title"></h3>
+                <div class="box-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                      <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                </div>
             </div>
-            <!-- /.box-header -->
               <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>name</th>
+                  <th>服务器</th>
                   <th>ip</th>
-                  <th>cpu avg</th>
-                  <th>mem avg</th>
-                  <th>spider num</th>
-                  <th>status</th>
+                  <th>cpu均值</th>
+                  <th>mem均值</th>
+                  <th>爬虫部署数量</th>
+                  <th>状态</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,15 +56,21 @@
                 </tbody>
               </table>
             </div>
-            </div>
-            <!-- /.box-body -->
+              <div class="box-footer">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+          </div>
           <!-- /.box -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
 </section>
-<!-- /.content -->
+
 {% end block %}
 
 <script>

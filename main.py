@@ -8,7 +8,8 @@ import tornado.web
 from handler.index_handler import IndexHandler, Index2Handler
 from handler.login_handler import LoginHandler, LogoutHandler
 from handler.cluster_handler import ClusterDashBoardHandler
-from handler.members_manger import MembersManageHandler
+from handler.manger_handler import MembersManageHandler, ProjectManageHandler
+from handler.spider_handler import SpiderDashBoardHandler
 from tornado.options import define, options
 
 define("port", default=8000, help="run on the given port", type=int)
@@ -19,7 +20,10 @@ routes = [
     (r"/logout", LoginHandler),
     (r"/index2", Index2Handler),
     (r"/cluster_dashboard", ClusterDashBoardHandler),
-    (r"/members_manage", MembersManageHandler)
+    (r"/spider_dashboard", SpiderDashBoardHandler),
+
+    (r"/members_manage", MembersManageHandler),
+    (r"/project_manage", ProjectManageHandler),
 ]
 
 

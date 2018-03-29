@@ -535,7 +535,7 @@ function generatePosition() {
 
     stage.add(new Word('p', {
         color: '#22CAB3',
-        x: 60,
+        x: 90,
         motion: motion.dance,
         data: { angle: 0, r: 5, step: Math.PI / 50 }
     }));

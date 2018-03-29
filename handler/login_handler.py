@@ -29,5 +29,5 @@ class LoginHandler(BaseHandler):
 class LogoutHandler(BaseHandler):
 
     def post(self):
-        self.clear_all_cookies()
+        # self.clear_all_cookies()
         self.redirect("/index")

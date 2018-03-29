@@ -35,7 +35,7 @@ class Application(tornado.web.Application):
             'template_path': 'templates',
             'static_path': 'static',
             "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
-            "login_url": "/login"
+            "login_url": "/"
         }
 
         tornado.web.Application.__init__(self, handlers, **settings)

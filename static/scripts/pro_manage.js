@@ -1,10 +1,9 @@
 
-$("#pro_edit").click(function(){
-    alert("编辑这个项目");
-
+$("#pro_edit_user").click(function(){
+    
 })
 
-$("#pro_del").click(function(){
+$("#pro_del_user").click(function(){
     alert("删除这个项目");
 
 })

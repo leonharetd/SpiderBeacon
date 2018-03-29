@@ -46,7 +46,7 @@
 
                 {% for machine in projects %}
                   <tr>
-                      <td hidden>{{ machine[1]["id"] }}</td>
+
                       <td>{{ machine[1]["name"] }}</td>
                       <td>{{ machine[1]["group"] }}</td>
                       <td>{{ machine[1]["user"] }}</td>
@@ -55,10 +55,14 @@
                       {% if machine[0] %}
                           <td>
                               <!--{{ machine[1]["action"] }}-->
-                      <button type="button" class="btn btn-block btn-success" id="pro_edit">编辑</button>
-                      <button type="button" class="btn btn-block btn-danger" id="pro_del">删除</button></td>
+                      <button type="button" class="btn btn-block btn-success" id="pro_edit_user" data-toggle="modal" data-target="#pro_edit">编辑</button>
+                      <button type="button" class="btn btn-block btn-danger" id="pro_del_user">删除</button></td>
                       {% else %}
-                          <td>No</td>
+                          <!--<td>No</td>-->
+                      <td>
+                      <button type="button" class="btn btn-block btn-success disabled">编辑</button>
+                      <button type="button" class="btn btn-block btn-danger disabled">删除</button></td>
+
                       {% end %}
                   </tr>
                 {% end for %}
@@ -80,6 +84,49 @@
       </div>
 </section>
 
+
+<!-- 修改项目成员－－触发事件：job-run-modal-member -->
+<div class="modal fade" id="pro_edit" tabindex="-1" role="dialog" style="border-radius:0.4375rem;" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" role="form" id="editProUserForm" width="480" height="450">
+                    <!-- select -->
+                    <div class="form-group">
+                        <label>用户组</label>
+                        <select class="form-control">
+                            <option>admin</option>
+                            <option>大浪1</option>
+                            <option>大浪2</option>
+                            <option>大浪3</option>
+                        </select>
+                    </div>
+                    <!-- select -->
+                    <div class="form-group">
+                        <label>用户</label>
+                        <select class="form-control">
+                            <option>admin</option>
+                            <option>大浪花</option>
+                            <option>大浪浪</option>
+                            <option>大可爱</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="edit_pro_user">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="{{ static_url('scripts/jquery.min.js') }}"></script>
 <script src="{{ static_url('scripts/pro_manage.js') }}"></script>
 
 {% end block %}

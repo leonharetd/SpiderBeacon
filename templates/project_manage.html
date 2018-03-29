@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content_header %}
-  <h1>集群监控</h1>
+  <h1>项目管理</h1>
   <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="#">监控</a></li>
-      <li class="active">集群监控</li>
+      <li><a href="#">Project</a></li>
+      <li class="active">项目管理</li>
   </ol>
 {% end block %}
 
@@ -33,6 +33,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                    <th hidden>projectId</th>
                   <th>project</th>
                   <th>group</th>
                   <th>user</th>
@@ -45,13 +46,17 @@
 
                 {% for machine in projects %}
                   <tr>
+                      <td hidden>{{ machine[1]["id"] }}</td>
                       <td>{{ machine[1]["name"] }}</td>
                       <td>{{ machine[1]["group"] }}</td>
                       <td>{{ machine[1]["user"] }}</td>
                       <td>{{ machine[1]["creator"] }}</td>
                       <td>{{ machine[1]["create_time"] }}</td>
                       {% if machine[0] %}
-                          <td>{{ machine[1]["action"] }}</td>
+                          <td>
+                              <!--{{ machine[1]["action"] }}-->
+                      <button type="button" class="btn btn-block btn-success" id="pro_edit">编辑</button>
+                      <button type="button" class="btn btn-block btn-danger" id="pro_del">删除</button></td>
                       {% else %}
                           <td>No</td>
                       {% end %}
@@ -74,6 +79,8 @@
         </div>
       </div>
 </section>
+
+<script src="{{ static_url('scripts/pro_manage.js') }}"></script>
 
 {% end block %}
 

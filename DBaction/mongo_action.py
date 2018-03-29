@@ -6,7 +6,7 @@ import traceback
 
 class MongoAction(object):
 
-    def __init__(self, host, port, db_name):
+    def __init__(self, host, port, db_name="SpiderBeacon"):
         self.db_name = db_name
         self.mongo_action = pymongo.MongoClient(host=host, port=port)
         print self.mongo_action[db_name].authenticate("SpiderBeacon", "1qazxcvfr432")

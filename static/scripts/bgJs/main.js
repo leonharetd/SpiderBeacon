@@ -451,20 +451,12 @@ var Stage$1 = function (_Group) {
  */
 var data = {
 
-    'S': [[70, 70, 12, 76, 12, 123, 70, 128]],
-    'p': [[25, 68, 23, 140, 80, 140, 74, 100], [73, 62, 72, 90, 75, 110, 93, 134]],
-    'i': [[21, 62, 21, 62, 21, 128, 21, 128], [21, 128, 17, 96, 17, 68, 65, 60]],
-    'd': [[12, 58, 41, 132, 61, 132, 96, 58]],
-    'e': [[52, 48, 53, 48, 54, 49, 52, 48], [8, 175, 24, 204, 60, 197, 56, 74]],
-    'r': [[44, 104, 112, 52, -20, 82, 77, 136]],
-    'B': [[81, 72, 17, 42, 105, 145, 41, 120]],
-    'e': [[77, 27, 30, 114, 36, 126, 57, 126]],
-    'a': [[56, 71, 56, 72, 59, 70, 56, 73], [47, 93, 59, 81, 47, 121, 59, 111]],
-    'c': [[44, 104, 112, 52, -20, 82, 77, 136]],
-    'o': [[56, 71, 56, 72, 59, 70, 56, 73]],
-    'n': [[8, 175, 24, 204, 60, 197, 56, 74]],
-
-
+    'S': [[132, 72, -5, 53, 193, 205, 33, 195]],
+    'p': [[96, 74, 95, 116, 92, 100, 78, 212], [96, 74, 189, 55, 181, 140, 94, 136]],
+    'i': [[149, 127, 105, 209, 133, 78, 100, 107], [111, 61, 112, 61, 111, 61, 113, 61]],
+    'd': [[130, 217, 0, 229, 84, 113, 123, 155], [130, 217, 105, 229, 153, 78, 155, 65]],
+    'e': [[198, 179, 101, 140, 204, 12, 256, 117], [256, 117, 140, 109, 171, 109, 253, 117]],
+    'r': [[342, 240, 331, 149, 342, 238, 331, 148], [342, 240, 331, 149, 337, 180, 389, 143]],
 };
 
 var Word$1 = function (_Group) {
@@ -543,82 +535,42 @@ function generatePosition() {
 
     stage.add(new Word('p', {
         color: '#22CAB3',
-        x: 60,
+        x: 90,
         motion: motion.dance,
         data: { angle: 0, r: 5, step: Math.PI / 50 }
     }));
 
     stage.add(new Word('i', {
         color: '#22CAB3',
-        x: 145,
+        x: 185,
         motion: motion.dance,
         data: { angle: 0, r: 5, step: Math.PI / 50 }
     }));
 
     stage.add(new Word('d', {
         color: '#22CAB3',
-        x: 210,
+        x: 290,
         y: 10,
         motion: motion.dance,
         data: { angle: 0, r: 5, step: Math.PI / 50 }
     }));
 
-    stage.add(new Word('e', {
+        stage.add(new Word('e', {
         color: '#22CAB3',
-        x: 280,
-        y: -5,
+        x: 340,
+        y: 10,
         motion: motion.dance,
         data: { angle: 0, r: 5, step: Math.PI / 50 }
     }));
 
     stage.add(new Word('r', {
-        color: '#FF7784',
-        x: 350,
+        color: '#22CAB3',
+        x: 345,
+        y: 10,
         motion: motion.dance,
         data: { angle: 0, r: 5, step: Math.PI / 50 }
     }));
 
-    stage.add(new Word('B', {
-        color: '#FF7784',
-        x: 400,
-        motion: motion.dance,
-        data: { angle: 0, r: 5, step: Math.PI / 50 }
-    }));
-
-     stage.add(new Word('e', {
-            color: '#FF7784',
-            x: 470,
-            motion: motion.dance,
-            data: { angle: 0, r: 5, step: Math.PI / 50 }
-        }));
-
-       stage.add(new Word('a', {
-              color: '#FF7784',
-              x: 520,
-              motion: motion.dance,
-              data: { angle: 0, r: 5, step: Math.PI / 50 }
-          }));
-
-      stage.add(new Word('c', {
-                    color: '#FF7784',
-                    x: 590,
-                    motion: motion.dance,
-                    data: { angle: 0, r: 5, step: Math.PI / 50 }
-                }));
-
-       stage.add(new Word('o', {
-                     color: '#FF7784',
-                     x: 660,
-                     motion: motion.dance,
-                     data: { angle: 0, r: 5, step: Math.PI / 50 }
-                 }));
-
-                 stage.add(new Word('n', {
-                                      color: '#FF7784',
-                                      x: 720,
-                                      motion: motion.dance,
-                                      data: { angle: 0, r: 5, step: Math.PI / 50 }
-                                  }));
 }
 
 function tick$1() {

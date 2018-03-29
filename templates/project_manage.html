@@ -33,24 +33,28 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>服务器</th>
-                  <th>ip</th>
-                  <th>cpu均值</th>
-                  <th>mem均值</th>
-                  <th>爬虫部署数量</th>
-                  <th>状态</th>
+                  <th>project</th>
+                  <th>group</th>
+                  <th>user</th>
+                  <th>creator</th>
+                  <th>create time</th>
+                  <th>action</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                {% for machine in cluster %}
+                {% for machine in projects %}
                   <tr>
-                      <td>{{ machine["name"] }}</td>
-                      <td>{{ machine["ip"] }}</td>
-                      <td>{{ machine["cpu_avg"] }}</td>
-                      <td>{{ machine["mem_avg"] }}</td>
-                      <td>{{ machine["spider_num"] }}</td>
-                      <td>{{ machine["status"] }}</td>
+                      <td>{{ machine[1]["name"] }}</td>
+                      <td>{{ machine[1]["group"] }}</td>
+                      <td>{{ machine[1]["user"] }}</td>
+                      <td>{{ machine[1]["creator"] }}</td>
+                      <td>{{ machine[1]["create_time"] }}</td>
+                      {% if machine[0] %}
+                          <td>{{ machine[1]["action"] }}</td>
+                      {% else %}
+                          <td>No</td>
+                      {% end %}
                   </tr>
                 {% end for %}
                 </tbody>

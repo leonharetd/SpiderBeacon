@@ -1,9 +1,6 @@
 #!/usr/bin/env Python
 # coding:utf-8
-import hashlib
-import re
 from base_bil import BaseBIL
-from base_bil import AccountException
 from DBaction.settings import MONGODB_PORT, MONGODB_HOST
 from DBaction.mongo_action import MongoAction
 
@@ -33,6 +30,21 @@ class MembersManageBIL(BaseBIL):
         members = list(set(member["username"] for member in group_members))
         members_list = [members[i:i+each_of_line] for i in range(0, len(members), each_of_line)]
         return members_list
+
+
+class ProjectManageBIL(BaseBIL):
+
+    def __init__(self):
+        super(ProjectManageBIL, self).__init__()
+
+    def show_project(self):
+        """
+        显示所有服务器,
+        :return: 所有服务器信息
+        """
+        mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
+        project_list = mongo_action.find("project", {})
+        return project_list
 
 
 if __name__ == "__main__":

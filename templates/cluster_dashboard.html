@@ -33,17 +33,17 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>服务器</th>
+                  <th>server</th>
                   <th>ip</th>
-                  <th>cpu均值</th>
-                  <th>mem均值</th>
-                  <th>爬虫部署数量</th>
-                  <th>状态</th>
+                  <th>cpu avg</th>
+                  <th>mem avg</th>
+                  <th>spider num</th>
+                  <th>stats</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                {% for machine in cluster %}
+                {% for machine in machines %}
                   <tr>
                       <td>{{ machine["name"] }}</td>
                       <td>{{ machine["ip"] }}</td>

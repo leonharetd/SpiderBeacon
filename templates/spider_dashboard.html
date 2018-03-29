@@ -121,6 +121,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                    <th><input type="checkbox" class="flat-red" checked></th>
                   <th>服务器</th>
                   <th>ip</th>
                   <th>cpu均值</th>
@@ -133,6 +134,7 @@
 
                 {% for machine in cluster %}
                   <tr>
+                      <td><input type="checkbox" class="flat-red" checked></td>
                       <td>{{ machine["name"] }}</td>
                       <td>{{ machine["ip"] }}</td>
                       <td>{{ machine["cpu_avg"] }}</td>

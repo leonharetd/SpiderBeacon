@@ -230,7 +230,7 @@ body {
   font-size: 16px;
   color: #fff;
   background-color: #4acad9;
-  box-shadow: 0 0 0 1.875rem #fff;
+ /** box-shadow: 0 0 0 1.875rem #fff; **/
   border-radius: 0.375rem;
   text-align: center;
   width: 13.75rem;

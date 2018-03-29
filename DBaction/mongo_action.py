@@ -9,13 +9,21 @@ class MongoAction(object):
     def __init__(self, host, port, db_name="SpiderBeacon"):
         self.db_name = db_name
         self.mongo_action = pymongo.MongoClient(host=host, port=port)
-        print self.mongo_action[db_name].authenticate("SpiderBeacon", "1qazxcvfr432")
+        self.mongo_action[db_name].authenticate("SpiderBeacon", "1qazxcvfr432")
 
     def find(self, collection, query):
         try:
             db = self.mongo_action.get_database(self.db_name)
             collect = db.get_collection(collection)
             return collect.find(query)
+        except Exception as e:
+            print traceback.format_exc()
+
+    def find_one(self, collection, query):
+        try:
+            db = self.mongo_action.get_database(self.db_name)
+            collect = db.get_collection(collection)
+            return collect.find_one(query)
         except Exception as e:
             print traceback.format_exc()
 
@@ -47,5 +55,5 @@ class MongoAction(object):
 
 if __name__ == "__main__":
     temp = MongoAction("39.106.145.106", 27117)
-    for i in temp.find("SpiderBeaconUser", {}):
+    for i in temp.find("user_info", {"username": "root"}):
         print i

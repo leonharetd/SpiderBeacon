@@ -160,7 +160,7 @@
                 </svg>
             </div>
         </div>
-        <form1 action="" id="js-modal" class="modal">
+        <form action="/login" id="js-modal" class="modal" method="POST">
             <div id="js-close-button" class="modal__close">
                 <div id="" title="" class="icon ">
                     <svg viewBox="0 0 32 32">
@@ -172,7 +172,7 @@
             <div class="modal__description">this is dumb modal window, click × to close it</div>
             <div class="modal__section">
                 <div class="input-with-label">
-                    <input id="name" type="text" class="input-with-label__input">
+                    <input id="name" type="text" class="input-with-label__input" name="username">
                     <label for="name" class="input-with-label__label">username or email
                         <div class="input-with-label__label__corner"></div>
                     </label>
@@ -180,7 +180,7 @@
             </div>
             <div class="modal__section">
                 <div class="input-with-label">
-                    <input id="password" type="password" class="input-with-label__input">
+                    <input id="password" type="password" class="input-with-label__input" name="password">
                     <label for="password" class="input-with-label__label">password
                         <div class="input-with-label__label__corner"></div>
                     </label>
@@ -194,7 +194,7 @@
                     <button class="button--grey">cancel</button>
                 </div>
             </div>
-        </form1>
+        </form>
         <svg style="display:none">
             <image width="480" height="450" xlink:href="" id="proto-image" class="js-proto-image"></image>
         </svg>

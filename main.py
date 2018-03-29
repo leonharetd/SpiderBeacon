@@ -15,7 +15,7 @@ from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
 
 routes = [
-    (r"/index", IndexHandler),  # 来自根路径的请求用 IndesHandlers 处理
+    (r"/", IndexHandler),
     (r"/login", LoginHandler),
     (r"/logout", LoginHandler),
     (r"/index2", Index2Handler),

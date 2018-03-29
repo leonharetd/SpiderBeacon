@@ -9,8 +9,8 @@ class IndexHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        self.render('index.html', user=self.current_user)
-
+        session = uuid4()
+        self.render("index.html", session=session)
 
 
 class Index2Handler(BaseHandler):

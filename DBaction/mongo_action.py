@@ -38,8 +38,16 @@ class MongoAction(object):
     def update(self, collection, query, value, s_upsert=False, s_multi=False):
         try:
             db = self.mongo_action.get_database(self.db_name)
-            collect = db.get_collection(collection)
+            collect = db.get_collection(collection).up
             collect.update(query, value, upsert=s_upsert, multi=s_multi)
+        except Exception as e:
+            print traceback.format_exc()
+
+    def delete_one(self, collection, query):
+        try:
+            db = self.mongo_action.get_database(self.db_name)
+            collect = db.get_collection(collection)
+            collect.delete_one(query)
         except Exception as e:
             print traceback.format_exc()
 

@@ -9,6 +9,7 @@ class MembersManageBIL(BaseBIL):
 
     def __init__(self):
         super(MembersManageBIL, self).__init__()
+        self.mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
 
     def show_group(self):
         """
@@ -16,20 +17,37 @@ class MembersManageBIL(BaseBIL):
         :return: 所有用户组
         """
         each_of_line = 8
-        mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
-        user_info = mongo_action.find("user_info", {})
+        user_info = self.mongo_action.find("user_info", {})
         group_list = list(set(user["group"] for user in user_info))
         show_list = [group_list[i:i+each_of_line] for i in range(0, len(group_list), each_of_line)]
         return show_list
 
     def show_group_members(self, group):
         each_of_line = 8
-        mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
-        user_info = mongo_action.find("user_info", {})
+        user_info = self.mongo_action.find("user_info", {})
         group_members = filter(lambda x: x["group"] == group, user_info)
         members = list(set(member["username"] for member in group_members))
         members_list = [members[i:i+each_of_line] for i in range(0, len(members), each_of_line)]
         return members_list
+
+    def group_name_check(self, group_name):
+        user_info = self.mongo_action.find_one("user_info", {"group": group_name})
+        if user_info:
+            return False
+        return True
+
+    def user_name_check(self, user_name):
+        user_info = self.mongo_action.find("user_info", {"user_name": user_name})
+        if user_info:
+            return False
+        return True
+
+    def insert_member(self, info):
+        self.mongo_action.insert("user_info", info)
+
+    def delete_member(self, info):
+        member = self.mongo_action.find_one("user_info", {"group": info["group"], "username": info["username"]})
+        self.mongo_action.delete_one("user_info", {"_id": member["_id"]})
 
 
 class ProjectManageBIL(BaseBIL):

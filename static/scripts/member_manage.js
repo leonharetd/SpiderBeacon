@@ -1,15 +1,22 @@
 
 //添加项目组管理
 $('#add_group').click(function(){
+    var group = {};
+    group['group'] = $("#group_name").val();
+    group['passward'] = $("#group_passwd").val();
+    group['authority'] = 0;
+    group['action'] = "add_group";
+    console.log(group)
     $.ajax({
-        url : '${pageContext.request.contextPath}/stu/stu_upstudent.action',
-        data : $("#addGroupForm"),
+        url : '/members_manage',
+        data : group,
         type : 'POST',
         dataType : 'json',
-        async: true,
+        async: false,
         success : function(data) {
-
             alert(data.result);
+            $('.modal').modal('hide')
+            location.reload();
         }
      });
 });
@@ -24,6 +31,8 @@ $('#add_user').click(function(){
         async:true,
         success : function(data) {
             alert(data.result);
+            $('.modal').modal('hide')
+            location.reload();
         }
      });
 });

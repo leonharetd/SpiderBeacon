@@ -1,6 +1,7 @@
 #!/usr/bin/env Python
 # coding:utf-8
-from uuid import uuid4
+from datetime import datetime
+import hashlib
 import tornado.web
 from handerBIL.base_bil import auth_by_filter
 from handerBIL.manage_bil import MembersManageBIL, ProjectManageBIL
@@ -16,6 +17,39 @@ class MembersManageHandler(BaseHandler):
         group = self.get_secure_cookie("g")
         members = members_manage.show_group_members(group)
         self.render('members_manage.html', groups=groups, members=members)
+
+    @tornado.web.authenticated
+    def post(self):
+        members_manage = MembersManageBIL()
+        action = self.get_argument("action")
+        group = self.get_argument("group")
+        passward = self.get_argument("passward")
+        authority = self.get_argument("authority")
+        if action == "add_group":
+            if members_manage.group_name_check(group):
+                info = {
+                    "username": group,
+                    "group": group,
+                    "password": hashlib.md5(passward).hexdigest(),
+                    "authority": int(authority),
+                    "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                }
+                members_manage.insert_member(info)
+                self.write({"result": "ok"})
+
+        elif action == "add_user":
+            user_name = self.get_argument("username")
+            if members_manage.user_name_check(user_name):
+                info = {
+                    "username": user_name,
+                    "group": group_name,
+                    "password": pass_word,
+                    "authority": authority,
+                    "create_time": datetime.now().strftime("%b %d %Y %H:%M:%S")
+                }
+                members_manage.insert_member(info)
+        elif action == "del_user":
+            pass
 
 
 class ProjectManageHandler(BaseHandler):

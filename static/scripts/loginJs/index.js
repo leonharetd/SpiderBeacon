@@ -37,12 +37,6 @@
       this.showModal(true);
       this.showHints(700);
       isOpera = navigator.userAgent.match(/Opera|OPR\//);
-      crack1 = '../media/gun.wav';
-      crack3 = '../media/gun.mp3';
-      url = !isOpera ? crack3 : crack1;
-      return this.audio = new Howl({
-        urls: [url]
-      });
     };
 
     Main.prototype.showHints = function(delay) {

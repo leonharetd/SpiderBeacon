@@ -53,15 +53,26 @@
                       <td>{{ machine[1]["creator"] }}</td>
                       <td>{{ machine[1]["create_time"] }}</td>
                       {% if machine[0] %}
-                          <td>
-                      <button type="button" class="btn btn-block btn-success" id="pro_edit_user" data-toggle="modal" data-target="#pro_edit">编辑</button>
-                      <button type="button" class="btn btn-block btn-danger" id="pro_del_user">删除</button></td>
+                          <div class="btn-group">
+                              <td>
+                                  <div style="width:50%;padding:0;margin:0;float:left;box-sizing:border-box;padding-right:3px;">
+                                      <button type="button" class="btn btn-block btn-success btn-sm" id="pro_edit_user" data-toggle="modal" data-target="#pro_edit">编辑</button>
+                                    </div>
+                                  <div style="width:50%;padding:0;margin:0;float:left;box-sizing:border-box;">
+                                      <button type="button" class="btn btn-block btn-danger btn-sm" id="pro_del_user">删除</button>
+                                    </div>
+                              </td>
+                        </div>
                       {% else %}
                           <!--<td>No</td>-->
-                      <td>
-                      <button type="button" class="btn btn-block btn-success disabled">编辑</button>
-                      <button type="button" class="btn btn-block btn-danger disabled">删除</button></td>
-
+                          <td>
+                              <div style="width:50%;padding:0;margin:0;float:left;box-sizing:border-box;padding-right:3px;">
+                                <button type="button" class="btn btn-block btn-success disabled">编辑</button>
+                              </div>
+                              <div style="width:50%;padding:0;margin:0;float:left;box-sizing:border-box;padding-right:3px;">
+                                <button type="button" class="btn btn-block btn-danger disabled">删除</button>
+                              </div>
+                            </td>
                       {% end %}
                   </tr>
                 {% end for %}

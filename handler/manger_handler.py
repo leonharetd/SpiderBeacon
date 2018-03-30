@@ -23,14 +23,14 @@ class MembersManageHandler(BaseHandler):
         members_manage = MembersManageBIL()
         action = self.get_argument("action")
         group = self.get_argument("group")
-        passward = self.get_argument("passward")
+        password = self.get_argument("passward")
         authority = self.get_argument("authority")
         if action == "add_group":
             if members_manage.group_name_check(group):
                 info = {
                     "username": group,
                     "group": group,
-                    "password": hashlib.md5(passward).hexdigest(),
+                    "password": hashlib.md5(password).hexdigest(),
                     "authority": int(authority),
                     "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
@@ -39,11 +39,12 @@ class MembersManageHandler(BaseHandler):
 
         elif action == "add_user":
             user_name = self.get_argument("username")
+            group = self.get_secure_cookie("g")
             if members_manage.user_name_check(user_name):
                 info = {
                     "username": user_name,
-                    "group": group_name,
-                    "password": pass_word,
+                    "group": group,
+                    "password": password,
                     "authority": authority,
                     "create_time": datetime.now().strftime("%b %d %Y %H:%M:%S")
                 }

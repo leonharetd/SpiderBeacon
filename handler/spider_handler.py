@@ -1,7 +1,9 @@
 #!/usr/bin/env Python
 # coding:utf-8
 import tornado.web
+from datetime import datetime
 from base_handler import BaseHandler
+from handerBIL.spider_bil import SpiderDeployBIL
 
 
 class SpiderDashBoardHandler(BaseHandler):
@@ -22,3 +24,28 @@ class SpiderDashBoardHandler(BaseHandler):
             {"name": "m1", "ip": "111.111.111.121", "cpu_avg": 51, "mem_avg": 54, "spider_num": 10, "status": True},
         ]
         self.render('spider_dashboard.html', cluster=cluster)
+
+
+class SpiderDeployHandler(BaseHandler):
+
+    @tornado.web.authenticated
+    def get(self):
+        spider_depoly = SpiderDeployBIL()
+        deploy_info = spider_depoly.get_deploy_info()
+        self.render('spider_deploy.html', deploy_info=deploy_info)
+
+    @tornado.web.authenticated
+    def post(self):
+        spider_depoly = SpiderDeployBIL()
+        pack_name = self.request.files["file_data"][0]["filename"]
+        deploy_info = {
+            "username":  self.get_secure_cookie("u"),
+            "group": self.get_secure_cookie("g"),
+            "pack_name": pack_name,
+            "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "version": "_".join([datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), pack_name])
+        }
+        file_metas = self.request.files["file_data"]
+        spider_depoly.save_upload_file(file_metas[0]["body"], pack_name)
+        spider_depoly.insert_deploy_info(deploy_info)
+        self.write({"message": "ok"})

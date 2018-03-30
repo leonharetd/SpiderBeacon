@@ -11,11 +11,13 @@ class MongoAction(object):
         self.mongo_action = pymongo.MongoClient(host=host, port=port)
         self.mongo_action[db_name].authenticate("SpiderBeacon", "1qazxcvfr432")
 
-    def find(self, collection, query):
+    def find(self, collection, query, limit=-1):
         try:
             db = self.mongo_action.get_database(self.db_name)
             collect = db.get_collection(collection)
-            return collect.find(query)
+            if limit == -1:
+                return collect.find(query)
+            return collect.find(query).sort("create_time", pymongo.DESCENDING).limit(limit)
         except Exception as e:
             print traceback.format_exc()
 

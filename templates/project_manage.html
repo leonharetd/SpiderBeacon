@@ -46,15 +46,14 @@
 
                 {% for machine in projects %}
                   <tr>
-
-                      <td>{{ machine[1]["name"] }}</td>
+                      <td hidden>{{ machine[1]["_id"] }}</td>
+                      <td>{{ machine[1]["pack_name"] }}</td>
                       <td>{{ machine[1]["group"] }}</td>
-                      <td>{{ machine[1]["user"] }}</td>
+                      <td>{{ machine[1]["username"] }}</td>
                       <td>{{ machine[1]["creator"] }}</td>
                       <td>{{ machine[1]["create_time"] }}</td>
                       {% if machine[0] %}
                           <td>
-                              <!--{{ machine[1]["action"] }}-->
                       <button type="button" class="btn btn-block btn-success" id="pro_edit_user" data-toggle="modal" data-target="#pro_edit">编辑</button>
                       <button type="button" class="btn btn-block btn-danger" id="pro_del_user">删除</button></td>
                       {% else %}

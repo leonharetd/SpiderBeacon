@@ -61,7 +61,7 @@ class ProjectManageBIL(BaseBIL):
         :return: 所有服务器信息
         """
         mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
-        project_list = mongo_action.find("project", {})
+        project_list = mongo_action.find("project_info", {})
         return project_list
 
 

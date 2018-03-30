@@ -43,9 +43,10 @@ class SpiderDeployHandler(BaseHandler):
             "group": self.get_secure_cookie("g"),
             "pack_name": pack_name,
             "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "creator": self.get_secure_cookie("u"),
             "version": "_".join([datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), pack_name])
         }
         file_metas = self.request.files["file_data"]
         spider_depoly.save_upload_file(file_metas[0]["body"], pack_name)
-        spider_depoly.insert_deploy_info(deploy_info)
+        spider_depoly.upsert_deploy_info(deploy_info)
         self.write({"message": "ok"})

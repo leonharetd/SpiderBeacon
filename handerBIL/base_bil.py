@@ -8,6 +8,7 @@ class AccountException(Exception):
 
 
 def auth_by_filter(jobs, group, user_name):
+    jobs = list(jobs)
     auth_tag = map(lambda x: x["group"] == group and x["username"] in ["*", user_name], jobs)
     return zip(auth_tag, jobs)
 

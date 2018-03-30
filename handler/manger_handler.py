@@ -62,26 +62,6 @@ class ProjectManageHandler(BaseHandler):
         group = self.get_secure_cookie("g")
         user_name = self.get_secure_cookie("u")
         auth = auth_by_filter(projects, group, user_name)
-        auth = [
-            (True, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                    "create_time": "2018-03-28", 'action': True}),
-            (True, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                    "create_time": "2018-03-28", 'action': True}),
-            (False, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                     "create_time": "2018-03-28", 'action': True}),
-            (True, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                    "create_time": "2018-03-28", 'action': True}),
-            (True, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                    "create_time": "2018-03-28", 'action': True}),
-            (False, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                     "create_time": "2018-03-28", 'action': True}),
-            (True, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                    "create_time": "2018-03-28", 'action': True}),
-            (True, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                    "create_time": "2018-03-28", 'action': True}),
-            (False, {"name": 1, "group": "root", "user": "*", "creator": "root",
-                     "create_time": "2018-03-28", 'action': True})
-        ]
         self.render('project_manage.html', projects=auth)
 
     @tornado.web.authenticated

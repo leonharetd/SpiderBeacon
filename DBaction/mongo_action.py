@@ -37,6 +37,14 @@ class MongoAction(object):
         except Exception as e:
             print traceback.format_exc()
 
+    def find_and_modify(self, collection, query, update):
+        try:
+            db = self.mongo_action.get_database(self.db_name)
+            collect = db.get_collection(collection)
+            collect.find_and_modify(query, update, upsert=True)
+        except Exception as e:
+            print traceback.format_exc()
+
     def update(self, collection, query, value, s_upsert=False, s_multi=False):
         try:
             db = self.mongo_action.get_database(self.db_name)

@@ -14,14 +14,14 @@ class SpiderDeployBIL(BaseBIL):
         self.upload_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     def save_upload_file(self, body, file_name):
-        with open(os.path.join(self.upload_path, "data",file_name), "wb") as fp:
+        with open(os.path.join(self.upload_path, "data", file_name), "wb") as fp:
             fp.write(body)
 
-    def insert_deploy_info(self, info):
-        self.mongo_action.insert("deploy_info", info)
+    def upsert_deploy_info(self, info):
+        self.mongo_action.find_and_modify("project_info", {"pack_name": info["pack_name"]}, info)
 
     def get_deploy_info(self):
-        return self.mongo_action.find("deploy_info", {}, limit=10)
+        return self.mongo_action.find("project_info", {}, limit=10)
 
 
 class ProjectManageBIL(BaseBIL):
@@ -35,7 +35,7 @@ class ProjectManageBIL(BaseBIL):
         :return: 所有服务器信息
         """
         mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
-        project_list = mongo_action.find("project", {})
+        project_list = mongo_action.find("project_info", {})
         return project_list
 
 

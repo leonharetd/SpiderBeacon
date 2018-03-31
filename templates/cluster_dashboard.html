@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+<link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
 
 {% block content_header %}
   <h1>集群监控</h1>
@@ -47,6 +48,14 @@
                   <tr>
                       <td>{{ machine["name"] }}</td>
                       <td>{{ machine["ip"] }}</td>
+                      <td>
+                          <div id="progress_cpu" class="progress progress-striped active">
+                              <div id="prog" class="progress-bar" role="progressbar" aria-valuenow="{{ machine['cpu_avg'] }}" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+                                  <span id="proglabel">正在启动，请稍后......</span>
+                              </div>
+                          </div>
+                      </td>
+
                       <td>{{ machine["cpu_avg"] }}</td>
                       <td>{{ machine["mem_avg"] }}</td>
                       <td>{{ machine["spider_num"] }}</td>
@@ -70,6 +79,12 @@
         </div>
       </div>
 </section>
+
+
+
+<script src="{{ static_url('scripts/jquery.min.js') }}"></script>
+<script src="{{ static_url('scripts/bootstrap.min.js') }}"></script>
+<script src="{{ static_url('scripts/common.js') }}"></script>
 
 {% end block %}
 

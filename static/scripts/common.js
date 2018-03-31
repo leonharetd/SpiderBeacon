@@ -6,86 +6,77 @@ value = 0
 }
 
 (function () {
-//    onload();
-
-     function onload () {
-        var links = document.getElementsByTagName("aria-valuenow");
-        for (var i = 0; i < links.length; i++) {
-            (function () {
-                var res = i;
-                var value = document.getElementById('prog').getAttribute('aria-valuenow');
-                //因为闭包内要使用i，所以外层i还依旧存在内存中
-                return function () {
-                    alert(links[res].innerHTML);
-                    alert(typeof this);
-                    alert(value);
-                }
-            })();
-        }
-     };
-
-//    increment();
 
     //百分数增加，0-25时为蓝色，25-50为绿色，50-75为黄色，75-100为红色
 //    function increment() {
-//        var links = document.getElementsByTagName("td")length;
-        var links = $("td div div");
-//        alert(links);
-        for (var i = 0; i < links.length; i++) {
-            var value = links[i].getAttribute('aria-valuenow');
+//        var links = document.getElementsByClassName("progress-forcun");
+//        for (var i = 0; i < links.length; i++) {
+//            var value = links[i].getAttribute('aria-valuenow');
 //            alert(value);
-            var time = 50;
-            //  value += 1;
-              $("#prog").css("width",value + "%").text(value + "%");
-              if (value>=0 && value<=25) {
-                  $("#prog").addClass("progress-bar-info");
-              }
-              else if (value>=25 && value <=50) {
-                  $("#prog").removeClass("progress-bar-info");
-                  $("#prog").addClass("progress-bar-success");
-              }
-              else if (value>=50 && value <=75) {
-                  $("#prog").removeClass("progress-bar-success");
-                  $("#prog").addClass("progress-bar-warning");
-              }
-              else if(value >= 75 && value<100) {
-                  $("#prog").removeClass("progress-bar-warning");
-                  $("#prog").addClass("progress-bar-danger");
-              }
-    //          else{
-    //              setTimeout(reset,3000);
-    //              return;
-    //          }
-    //          st = setTimeout(increment,time);
+//            var time = 50;
+//              $(".progress-bar").css("width",value + "%").text(value + "%");
+//              if (value>=0 && value<=25) {
+//                  $(".progress-bar").addClass("progress-bar-info");
+//                  return;
+//              }
+//              else if (value>=25 && value <=50) {
+//                  $(".progress-bar").removeClass("progress-bar-info").addClass("progress-bar-success");
+//                  return;
+//              }
+//              else if (value>=50 && value <=75) {
+//                  $(".progress-forcun").removeClass("progress-bar-success").addClass("progress-bar-warning");
+//                   return;
+//              }
+//              else if(value >= 75 && value<100) {
+//                  $(".progress-forcun").removeClass("progress-bar-warning").addClass("progress-bar-danger");
+//                   return;
+//              }
+//              else{
+//                  setTimeout(reset,3000);
+//                  return;
+//              }
+//             st = setTimeout(increment,time);
 //        }
-    }
+//    };
 
 
-//        var value = document.getElementById('prog').getAttribute('aria-valuenow');
-//        alert(value);
-//        var time = 50;
-//        //  value += 1;
-//          $("#prog").css("width",value + "%").text(value + "%");
-//          if (value>=0 && value<=25) {
-//              $("#prog").addClass("progress-bar-info");
-//          }
-//          else if (value>=25 && value <=50) {
-//              $("#prog").removeClass("progress-bar-info");
-//              $("#prog").addClass("progress-bar-success");
-//          }
-//          else if (value>=50 && value <=75) {
-//              $("#prog").removeClass("progress-bar-success");
-//              $("#prog").addClass("progress-bar-warning");
-//          }
-//          else if(value >= 75 && value<100) {
-//              $("#prog").removeClass("progress-bar-warning");
-//              $("#prog").addClass("progress-bar-danger");
-//          }
-//          else{
-//              setTimeout(reset,3000);
-//              return;
-//          }
-//          st = setTimeout(increment,time);
+
+    function increment() {
+            var links = document.getElementsByClassName("progress-forcun");
+            for (var i = 0; i < links.length; i++) {
+
+                var value = links[i].getAttribute('aria-valuenow');
+//                alert(value);
+                var valuetext = "";
+                if (value>=0 && value<=25) {
+                  valuetext = "progress-bar-info";
+                }
+                else if (value>=25 && value <=50) {
+                  valuetext = "progress-bar-success";
+                }
+                else if (value>=50 && value <=75) {
+                   valuetext = "progress-bar-warning";
+                }
+                else if(value >= 75 && value<100) {
+                   valuetext = "progress-bar-danger";
+                }
+                alert(valuetext);
+//                (function () {
+                $(".progress-bar").addClass(function() {
+                    return valuetext;
+                });
+
+//                $(".progress-bar").css(("width",value + "%").text(value + "%"),function() {
+//                    return value;
+//                });
+
+//             })();
+             }
+        }
+
+
+    increment();
+
 
 })();
 

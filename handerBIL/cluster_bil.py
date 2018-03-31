@@ -5,10 +5,10 @@ from DBaction.settings import MONGODB_PORT, MONGODB_HOST
 from DBaction.mongo_action import MongoAction
 
 
-class ServerManageBIL(BaseBIL):
+class ClusterManageBIL(BaseBIL):
 
     def __init__(self):
-        super(ServerManageBIL, self).__init__()
+        super(ClusterManageBIL, self).__init__()
 
     def show_servers(self):
         """
@@ -21,4 +21,4 @@ class ServerManageBIL(BaseBIL):
 
 
 if __name__ == "__main__":
-    t = ServerManageBIL()
+    t = ClusterManageBIL()

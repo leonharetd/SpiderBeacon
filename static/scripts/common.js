@@ -30,10 +30,10 @@ value = 0
 //    function increment() {
 //        var links = document.getElementsByTagName("td")length;
         var links = $("td div div");
-        alert(links);
+//        alert(links);
         for (var i = 0; i < links.length; i++) {
             var value = links[i].getAttribute('aria-valuenow');
-            alert(value);
+//            alert(value);
             var time = 50;
             //  value += 1;
               $("#prog").css("width",value + "%").text(value + "%");

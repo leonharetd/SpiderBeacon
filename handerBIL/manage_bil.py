@@ -1,6 +1,7 @@
 #!/usr/bin/env Python
 # coding:utf-8
 from base_bil import BaseBIL
+from base_bil import get_auth, filter_with_group
 from DBaction.settings import MONGODB_PORT, MONGODB_HOST
 from DBaction.mongo_action import MongoAction
 
@@ -22,10 +23,13 @@ class MembersManageBIL(BaseBIL):
         show_list = [group_list[i:i+each_of_line] for i in range(0, len(group_list), each_of_line)]
         return show_list
 
-    def show_group_members(self, group):
-        each_of_line = 8
+    @filter_with_group
+    def filter_group_members(self, **kwargs):
         user_info = self.mongo_action.find("user_info", {})
-        group_members = filter(lambda x: x["group"] == group, user_info)
+        return user_info
+
+    def get_group_members(self, group_members):
+        each_of_line = 8
         members = list(set(member["username"] for member in group_members))
         members_list = [members[i:i+each_of_line] for i in range(0, len(members), each_of_line)]
         return members_list
@@ -55,7 +59,8 @@ class ProjectManageBIL(BaseBIL):
     def __init__(self):
         super(ProjectManageBIL, self).__init__()
 
-    def show_project(self):
+    @get_auth
+    def get_project_auth(self, **kwargs):
         """
         显示所有服务器,
         :return: 所有服务器信息
@@ -66,5 +71,5 @@ class ProjectManageBIL(BaseBIL):
 
 
 if __name__ == "__main__":
-    t = MembersManageBIL()
-    print t.show_group_members("system")
+    t = ProjectManageBIL()
+    print t.get_project_auth(group="root", username="system")

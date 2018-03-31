@@ -6,13 +6,12 @@ $('#add_group').click(function(){
     group['passward'] = $("#group_passwd").val();
     group['authority'] = 0;
     group['action'] = "add_group";
-    console.log(group)
     $.ajax({
         url : '/members_manage',
         data : group,
         type : 'POST',
         dataType : 'json',
-        async: false,
+        async: true,
         success : function(data) {
             alert(data.result);
             $('.modal').modal('hide')
@@ -23,9 +22,14 @@ $('#add_group').click(function(){
 
 //添加项目组成员
 $('#add_user').click(function(){
+    var user = {};
+    user['username'] = $("#user_name").val();
+    user['passward'] = $("#user_passwd").val();
+    user['authority'] = $("#authority option:selected").val();
+    user['action'] = "add_user";
     $.ajax({
-        url : '${pageContext.request.contextPath}/stu/stu_upstudent.action',
-        data : $("#addUserForm"),
+        url : '/members_manage',
+        data : user,
         type : 'POST',
         dataType : 'json',
         async:true,

@@ -7,10 +7,28 @@ class AccountException(Exception):
         super(AccountException, self).__init__(err)
 
 
-def auth_by_filter(jobs, group, user_name):
-    jobs = list(jobs)
-    auth_tag = map(lambda x: x["group"] == group and x["username"] in ["*", user_name], jobs)
-    return zip(auth_tag, jobs)
+def get_auth(func):
+    def wrapper(self, **kwargs):
+        jobs = list(func(self, **kwargs))
+        auth_tag = map(lambda x: x["group"] in kwargs["group"] and x["username"] in ["*", kwargs["username"]], jobs)
+        return zip(auth_tag, jobs)
+    return wrapper
+
+
+def filter_with_group(func):
+    def wrapper(self, **kwargs):
+        jobs = list(func(self, **kwargs))
+        new_jobs = filter(lambda x: x["group"] in kwargs["group"], jobs)
+        return new_jobs
+    return wrapper
+
+
+def filter_with_username(func):
+    def wrapper(self, **kwargs):
+        jobs = list(func(self, **kwargs))
+        new_jobs = filter(lambda x: x["username"] in ["*", kwargs["username"]], jobs)
+        return new_jobs
+    return wrapper
 
 
 class BaseBIL(object):

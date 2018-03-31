@@ -3,7 +3,6 @@
 from datetime import datetime
 import hashlib
 import tornado.web
-from handerBIL.base_bil import auth_by_filter
 from handerBIL.manage_bil import MembersManageBIL, ProjectManageBIL
 from base_handler import BaseHandler
 
@@ -15,7 +14,8 @@ class MembersManageHandler(BaseHandler):
         members_manage = MembersManageBIL()
         groups = members_manage.show_group()
         group = self.get_secure_cookie("g")
-        members = members_manage.show_group_members(group)
+        members = members_manage.filter_group_members(group=group)
+        members = members_manage.get_group_members(members)
         self.render('members_manage.html', groups=groups, members=members)
 
     @tornado.web.authenticated
@@ -57,14 +57,13 @@ class ProjectManageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        project_manage = ProjectManageBIL()
-        projects = project_manage.show_project()
         group = self.get_secure_cookie("g")
         user_name = self.get_secure_cookie("u")
-        auth = auth_by_filter(projects, group, user_name)
-        self.render('project_manage.html', projects=auth)
+        project_manage = ProjectManageBIL()
+        projects = project_manage.get_project_auth(group=group, username=user_name)
+        self.render('project_manage.html', projects=projects)
 
     @tornado.web.authenticated
     def post(self):
         members_manage = ProjectManageBIL()
-        groups = members_manage.show_project()
+        groups = members_manage.get_project_auth()

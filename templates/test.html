@@ -13,7 +13,7 @@
     <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script type="text/javascript">
           $(document).ready(function(){
-              var value = 30;
+              var value = 0;
               var time = 50;
               //进度条复位函数
               function reset( ) {
@@ -23,7 +23,7 @@
               }
               //百分数增加，0-30时为红色，30-60为黄色，60-90为蓝色，>90为绿色
               function increment( ) {
-                  <!--value += 1;-->
+                  value += 1;
                   $("#prog").css("width",value + "%").text(value + "%");
                   if (value>=0 && value<=30) {
                       $("#prog").addClass("progress-bar-danger");
@@ -38,7 +38,7 @@
                   }
                   else if(value >= 90 && value<100) {
                       $("#prog").removeClass("progress-bar-info");
-                      $("#prog").addClass("progress-bar-success");    
+                      $("#prog").addClass("progress-bar-success");
                   }
                   else{
                       setTimeout(reset,3000);
@@ -59,7 +59,7 @@
                       $("#stop").val("start").text("重新开始");
                   } else if ("start" == $("#stop").val()) {
                       increment();
-                      $("#stop").val("stop").text("停止");                      
+                      $("#stop").val("stop").text("停止");
                   }
               });
               //进度条暂停与继续
@@ -82,12 +82,12 @@
         <span id="proglabel">正在启动，请稍后......</span>
     </div>
 </div>
-<!--<div class="form-group">-->
-    <!--<div class="col-sm-offset-4 col-sm-6">-->
-        <!--<button id="pause" class="btn btn-primary" value="pause">暂停</button>-->
-        <!--<button id="stop" class="btn btn-primary" value="stop">停止</button>-->
-        <!--&lt;!&ndash;<button id="goon" class="btn btn-primary">继续<button>&ndash;&gt;-->
-    <!--</div>-->
-<!--</div>-->
+<div class="form-group">
+    <div class="col-sm-offset-4 col-sm-6">
+        <button id="pause" class="btn btn-primary" value="pause">暂停</button>
+        <button id="stop" class="btn btn-primary" value="stop">停止</button>
+        <!--<button id="goon" class="btn btn-primary">继续<button>-->
+    </div>
+</div>
 </body>
 </html>

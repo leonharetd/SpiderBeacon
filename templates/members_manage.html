@@ -2,26 +2,26 @@
 {% extends "base.html" %}
 
 {% block content_header %}
-  <h1>成员管理</h1>
-  <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="#">Members</a></li>
-      <li class="active">成员管理</li>
-  </ol>
+<h1>成员管理</h1>
+<ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+    <li><a href="#">Members</a></li>
+    <li class="active">成员管理</li>
+</ol>
 {% end block %}
 
 {% block content_body %}
 
 <!-- Main content -->
 <section class="content">
-      <div class="row">
+    <div class="row">
         <div class="col-xs-12">
 
-          <div class="box">
-              <div class="box-header">
-              <h3 class="box-title"></h3>
-                <div class="box-tools">
-                    <ol style="float: right;
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"></h3>
+                    <div class="box-tools">
+                        <ol style="float: right;
                         margin-top: 0;
                         margin-bottom: 0;
                         font-size: 12px;
@@ -29,9 +29,10 @@
                         position: absolute;
                         top: 6px;
                         right: 10px;">
-                        <button type="button" id="js-modal-holder" class="btn btn-success btn-flat" style="margin-top: -10px; border-radius:5px;" data-toggle="modal"
-                                data-target="#job-run-modal">Add Group
-                        </button>
+                            <button type="button" id="js-modal-holder" class="btn btn-success btn-flat"
+                                    style="margin-top: -10px; border-radius:5px;" data-toggle="modal"
+                                    data-target="#job-run-modal">Add Group
+                            </button>
                         </ol>
                         <ol style="float: right;
                         margin-top: 0;
@@ -41,47 +42,49 @@
                         position: absolute;
                         top: 6px;
                         right: 10px;">
-                        <button type="button" id="js-modal-holder" class="btn btn-danger btn-flat" style="margin-top: -10px; border-radius:5px; margin-right: 100px;" data-toggle="modal"
-                                data-target="#job-run-modal-del">Delete Group
-                        </button>
-                    </ol>
+                            <button type="button" id="js-modal-holder" class="btn btn-danger btn-flat"
+                                    style="margin-top: -10px; border-radius:5px; margin-right: 100px;"
+                                    data-toggle="modal"
+                                    data-target="#job-run-modal-del">Delete Group
+                            </button>
+                        </ol>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <td colspan="10">
+                                <h6> ALL GROUP NAME</h6>
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for group in groups %}
+                        <tr>
+                            {% for name in group %}
+                            <td>{{ name}}</td>
+                            {% end for %}
+                        </tr>
+                        {% end for %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
                 </div>
             </div>
-              <div class="box-body">
-              <table id="example2" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <td colspan="10">
-                            <h6> ALL GROUP NAME</h6>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for group in groups %}
-                <tr>
-                    {% for name in group %}
-                      <td>{{ name}}</td>
-                    {% end for %}
-                </tr>
-                {% end for %}
-                </tbody>
-              </table>
-            </div>
-              <div class="box-footer">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
-              </div>
-          </div>
-          <div class="box">
-              <div class="box-header">
-              <h3 class="box-title"></h3>
-                <div class="box-tools">
-                    <ol style="float: right;
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"></h3>
+                    <div class="box-tools">
+                        <ol style="float: right;
                         margin-top: 0;
                         margin-bottom: 0;
                         font-size: 12px;
@@ -89,11 +92,12 @@
                         position: absolute;
                         top: 6px;
                         right: 10px;">
-                        <button type="button" class="btn btn-success btn-flat" style="margin-top: -10px; border-radius:5px;" data-toggle="modal"
-                                data-target="#job-run-modal-member">Add Member
-                        </button>
-                    </ol>
-                    <ol style="float: right;
+                            <button type="button" class="btn btn-success btn-flat"
+                                    style="margin-top: -10px; border-radius:5px;" data-toggle="modal"
+                                    data-target="#job-run-modal-member">Add Member
+                            </button>
+                        </ol>
+                        <ol style="float: right;
                         margin-top: 0;
                         margin-bottom: 0;
                         font-size: 12px;
@@ -101,77 +105,80 @@
                         position: absolute;
                         top: 6px;
                         right: 10px;">
-                        <button type="button" class="btn btn-danger btn-flat" style="margin-top: -10px; border-radius:5px; margin-right: 110px;" data-toggle="modal"
-                                data-target="#job-run-modal-member">Delete Member
-                        </button>
-                    </ol>
+                            <button type="button" class="btn btn-danger btn-flat"
+                                    style="margin-top: -10px; border-radius:5px; margin-right: 110px;"
+                                    data-toggle="modal"
+                                    data-target="#job-run-modal-member-del">Delete Member
+                            </button>
+                        </ol>
+                    </div>
                 </div>
-            </div>
-              <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <thead>
-                    <tr>
-                        <td colspan="10">
-                            <h6> ALL MEMBER NAME</h6>
-                        </td>
-                    </tr>
-                </thead>
-                </thead>
-                <tbody>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <thead>
+                        <tr>
+                            <td colspan="10">
+                                <h6> ALL MEMBER NAME</h6>
+                            </td>
+                        </tr>
+                        </thead>
+                        </thead>
+                        <tbody>
 
-                 {% for member in members %}
-                <tr>
-                    {% for name in member %}
-                      <td>{{ name}}</td>
-                    {% end for %}
-                </tr>
-                {% end for %}
-                </tbody>
-              </table>
+                        {% for member in members %}
+                        <tr>
+                            {% for name in member %}
+                            <td>{{ name}}</td>
+                            {% end for %}
+                        </tr>
+                        {% end for %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
             </div>
-              <div class="box-footer">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
-              </div>
-          </div>
-          <!-- /.box -->
+            <!-- /.box -->
         </div>
-      </div>
+    </div>
 </section>
 
 
 <!-- 添加管理组－－触发事件：job-run-modal -->
-<div class="modal fade" id="job-run-modal" tabindex="-1" role="dialog" style="border-radius:0.4375rem;" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="job-run-modal" tabindex="-1" role="dialog" style="border-radius:0.4375rem;"
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" >添加管理组</h4>
+                <h4 class="modal-title">添加管理组</h4>
             </div>
             <div class="modal-body">
-            <form action="" method="post" role="form" id="addGroupForm" width="480" height="450">
-            <!-- text input -->
-            <div class="form-group">
-                <label>group name</label>
-                <input type="text" id="group_name" class="form-control" placeholder="Enter ...">
-            </div>
-            <!-- select -->
-            <div class="form-group">
-                <label>password</label>
-                <input type="text" id="group_passwd" class="form-control" placeholder="Enter ...">
-            </div>
-            <!-- textarea -->
-            <div class="form-group">
-                <label>备注</label>
-                <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-            </div>
-        </form>
+                <form action="" method="post" role="form" id="addGroupForm" width="480" height="450">
+                    <!-- text input -->
+                    <div class="form-group">
+                        <label>group name</label>
+                        <input type="text" id="group_name" class="form-control" placeholder="Enter ...">
+                    </div>
+                    <!-- select -->
+                    <div class="form-group">
+                        <label>password</label>
+                        <input type="text" id="group_passwd" class="form-control" placeholder="Enter ...">
+                    </div>
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>备注</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -182,9 +189,9 @@
 </div>
 
 
-
 <!-- 添加组内成员－－触发事件：job-run-modal-member -->
-<div class="modal fade" id="job-run-modal-member" tabindex="-1" role="dialog" style="border-radius:0.4375rem;" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="job-run-modal-member" tabindex="-1" role="dialog" style="border-radius:0.4375rem;"
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

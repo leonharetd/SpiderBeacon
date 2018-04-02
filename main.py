@@ -10,6 +10,7 @@ from handler.login_handler import LoginHandler, LogoutHandler
 from handler.cluster_handler import ClusterDashBoardHandler
 from handler.manger_handler import MembersManageHandler, ProjectManageHandler
 from handler.spider_handler import SpiderDashBoardHandler, SpiderDeployHandler
+from handler.scrapy_handler import ScrapyHandler
 from tornado.options import define, options
 
 define("port", default=8000, help="run on the given port", type=int)
@@ -25,6 +26,8 @@ routes = [
 
     (r"/members_manage", MembersManageHandler),
     (r"/project_manage", ProjectManageHandler),
+
+    (r"/scrapy", ScrapyHandler)
 ]
 
 

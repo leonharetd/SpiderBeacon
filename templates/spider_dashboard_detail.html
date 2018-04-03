@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content_header %}
+  <h1>Spider Dashboard</h1>
+  <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="#">集群监控</a></li>
+      <li class="active">集群监控</li>
+  </ol>
+{% end block %}
+
+{% block content_body %}
+
+<!-- Main content -->
+<section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+              <div class="box-header">
+                  <h3 class="box-title">Next Jobs</h3>
+                  <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+              </div>
+              </div>
+              <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>服务器</th>
+                  <th>ip</th>
+                  <th>cpu均值</th>
+                  <th>mem均值</th>
+                  <th>爬虫部署数量</th>
+                  <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for machine in cluster %}
+                  <tr>
+                      <td>{{ machine["name"] }}</td>
+                      <td>{{ machine["ip"] }}</td>
+                      <td>{{ machine["cpu_avg"] }}</td>
+                      <td>{{ machine["mem_avg"] }}</td>
+                      <td>{{ machine["spider_num"] }}</td>
+                      <td>{{ machine["status"] }}</td>
+                  </tr>
+                {% end for %}
+                </tbody>
+              </table>
+            </div>
+              <div class="box-footer">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+          </div>
+          <div class="box">
+              <div class="box-header">
+                  <h3 class="box-title">Running Jobs</h3>
+                  <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+              </div>
+              </div>
+              <div class="box-body">
+              <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>服务器</th>
+                  <th>ip</th>
+                  <th>cpu均值</th>
+                  <th>mem均值</th>
+                  <th>爬虫部署数量</th>
+                  <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for machine in cluster %}
+                  <tr>
+                      <td>{{ machine["name"] }}</td>
+                      <td>{{ machine["ip"] }}</td>
+                      <td>{{ machine["cpu_avg"] }}</td>
+                      <td>{{ machine["mem_avg"] }}</td>
+                      <td>{{ machine["spider_num"] }}</td>
+                      <td>{{ machine["status"] }}</td>
+                  </tr>
+                {% end for %}
+                </tbody>
+              </table>
+            </div>
+              <div class="box-footer">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+          </div>
+          <div class="box">
+              <div class="box-header">
+                  <h3 class="box-title">Completed Jobs</h3>
+                  <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+              </div>
+              </div>
+              <div class="box-body">
+              <table id="example3" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <!--<th><input type="checkbox" class="flat-red" checked></th>-->
+                  <th>服务器</th>
+                  <th>ip</th>
+                  <th>cpu均值</th>
+                  <th>mem均值</th>
+                  <th>爬虫部署数量</th>
+                  <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for machine in cluster %}
+                  <tr>
+                      <!--<td><input type="checkbox" class="flat-red" checked></td>-->
+                      <td>{{ machine["name"] }}</td>
+                      <td>{{ machine["ip"] }}</td>
+                      <td>{{ machine["cpu_avg"] }}</td>
+                      <td>{{ machine["mem_avg"] }}</td>
+                      <td>{{ machine["spider_num"] }}</td>
+                      <td>{{ machine["status"] }}</td>
+                  </tr>
+                {% end for %}
+                </tbody>
+              </table>
+            </div>
+              <div class="box-footer">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+</section>
+
+{% end block %}
+
+

@@ -14,7 +14,7 @@ class ScrapyHandler(BaseHandler):
         action = self.get_argument("action")
         if action == "watcher":
 
-            init_info = {
+            spider_info = {
                 "ip": self.request.remote_ip,
                 "start_time": self.get_argument("start_time"),
                 "project_name": self.get_argument("project_name"),
@@ -25,5 +25,14 @@ class ScrapyHandler(BaseHandler):
                 "itemrate": self.get_argument("itemrate"),
                 "status": self.get_argument("status"),
             }
-            print init_info
+            if spider_info["status"] == "start":
+                # 初始化状态
+                pass
+            elif spider_info["status"] == "running":
+                # 更新状态
+                pass
+            elif spider_info["finished"] == "finished":
+                # 更新
+                pass
+
         print "aaaaa"

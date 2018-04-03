@@ -14,8 +14,8 @@ class RedisAction(object):
     def __init__(self, db=0):
         self.redis = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=PASS_WD, db=db)
 
-    def create_job_id(self):
-        return self.redis.incr("schedule_id")
+    def incr(self, key):
+        return self.redis.incr(key)
 
 
 if __name__ == "__main__":

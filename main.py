@@ -9,7 +9,7 @@ from handler.index_handler import IndexHandler, Index2Handler
 from handler.login_handler import LoginHandler, LogoutHandler
 from handler.cluster_handler import ClusterDashBoardHandler
 from handler.manger_handler import MembersManageHandler, ProjectManageHandler
-from handler.spider_handler import SpiderDashBoardHandler, SpiderDeployHandler
+from handler.spider_handler import SpiderDashBoardHandler, SpiderDeployHandler, SpiderDashBoardDetailHandler
 from handler.scrapy_handler import ScrapyHandler
 from tornado.options import define, options
 
@@ -22,6 +22,7 @@ routes = [
     (r"/index2", Index2Handler),
     (r"/cluster_dashboard", ClusterDashBoardHandler),
     (r"/spider_dashboard", SpiderDashBoardHandler),
+    (r"/spider_dashboard_detail", SpiderDashBoardDetailHandler),
     (r"/spider_deploy", SpiderDeployHandler),
 
     (r"/members_manage", MembersManageHandler),

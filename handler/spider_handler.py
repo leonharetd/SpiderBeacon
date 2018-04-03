@@ -69,4 +69,4 @@ class SpiderDashBoardDetailHandler(BaseHandler):
             {"name": "m1", "ip": "111.111.111.120", "cpu_avg": 52, "mem_avg": 23, "spider_num": 10, "status": True},
             {"name": "m1", "ip": "111.111.111.121", "cpu_avg": 51, "mem_avg": 54, "spider_num": 10, "status": True},
         ]
-        self.render('spider_dashboard.html', cluster=cluster)
+        self.render('spider_dashboard_detail.html', machines=cluster)

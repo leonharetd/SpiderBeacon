@@ -50,7 +50,7 @@
                       <td>{{ machine["ip"] }}</td>
                       <td>
                           <div class="progress progress-striped active">
-                          {% if machine['cpu_avg']>=20 & machine['cpu_avg']<=25 %}
+                          {% if machine['cpu_avg']<=25 %}
                               <input type="hidden" value="222" onload="increment({{ machine['cpu_avg'] }},{{ machine['ip'] }})";/>
 
                                   <div id="{{ machine['mem_avg'] }}" class="progress-bar progress-bar-info" role="progressbar"
@@ -59,7 +59,7 @@
                                       {{ machine['cpu_avg'] }}%
                                   </div>
 
-                          {% elif machine['cpu_avg']>=25 & machine['cpu_avg']<=50 %}
+                          {% elif machine['cpu_avg']>=25 and machine['cpu_avg']<=50 %}
                               <!--<div class="progress progress-striped active">-->
                                   <div id="{{ machine['mem_avg'] }}" class="progress-bar progress-bar-success" role="progressbar"
                                        aria-valuenow="{{ machine['cpu_avg'] }}" aria-valuemin="0"
@@ -67,7 +67,7 @@
                                       {{ machine['cpu_avg'] }}%
                                   </div>
                               <!--</div>-->
-                          {% elif machine['cpu_avg']>=50 &  machine['cpu_avg']<=75 %}
+                          {% elif machine['cpu_avg']>=50 and machine['cpu_avg']<=75 %}
                               <!--<div class="progress progress-striped active">-->
                                   <div id="{{ machine['mem_avg'] }}" class="progress-bar progress-bar-warning" role="progressbar"
                                        aria-valuenow="{{ machine['cpu_avg'] }}" aria-valuemin="0"
@@ -87,10 +87,15 @@
                           {% end %}
                           </div>
                       </td>
-                      <td>{{ machine["cpu_avg"] }}</td>
-                      <td>{{ machine["mem_avg"] }}</td>
+                      <td>
+                          <span class="linecustom">10,8,9,3,5,8,5,7,10,8,9,3,5,8,5,7,10,8,9,3,5,8,5,7</span>
+                      </td>
                       <td>{{ machine["spider_num"] }}</td>
-                      <td>{{ machine["status"] }}</td>
+                      {% if machine['status'] %}
+                          <td><span class="label label-success">Running</span></td>
+                      {% else %}
+                          <td><span class="label label-danger">Stop</span></td>
+                      {% end %}
                   </tr>
                 {% end for %}
                 </tbody>
@@ -115,42 +120,19 @@
 
 <script src="{{ static_url('scripts/jquery.min.js') }}"></script>
 <script src="{{ static_url('scripts/bootstrap.min.js') }}"></script>
+<script src="{{ static_url('scripts/jquery.knob.js')}}"></script>
+<script src="{{ static_url('scripts/jquery.sparkline.min.js')}}"></script>
+<script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-              var time = 50;
-              //百分数增加，0-30时为红色，30-60为黄色，60-90为蓝色，>90为绿色
-
-
-              function increment(value,value2) {
-
-              alert(2222);
-                  $("#"+value2).css("width",value + "%").text(value + "%");
-                  if (value>=0 && value<=30) {
-                      $("#"+value2).addClass("progress-bar-danger");
-                  }
-                  else if (value>=30 && value <=60) {
-                      $("#"+value2).removeClass("progress-bar-danger");
-                      $("#"+value2).addClass("progress-bar-warning");
-                  }
-                  else if (value>=60 && value <=90) {
-                      $("#"+value2).removeClass("progress-bar-warning");
-                      $("#"+value2+"").addClass("progress-bar-info");
-                  }
-                  else if(value >= 90 && value<100) {
-                      $("#"+value2).removeClass("progress-bar-info");
-                      $("#"+value2).addClass("progress-bar-success");
-                  }
-                  else{
-                      <!--setTimeout(reset,3000);-->
-                      <!--return;-->
-                  }
-              };
-
-              increment( {{ machine['cpu_avg'] }}, {{ machine['mem_avg'] }} );
-              });
-      </script>
-
+    $(".linecustom").each(function () {
+      var $this = $(this);
+      $this.sparkline('html',
+        {
+          height: '1.8em', width: '16em', lineColor: '#f00', fillColor: '#ffa',
+          minSpotColor: false, maxSpotColor: false, spotColor: '#77f', spotRadius: 3
+        });
+    });
+</script>
 {% end block %}
 
 

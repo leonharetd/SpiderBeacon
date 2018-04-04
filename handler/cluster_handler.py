@@ -22,7 +22,7 @@ class ClusterDashBoardHandler(BaseHandler):
             {"name": "ppt", "ip": "111.114.111.111", "cpu_avg": 85, "mem_avg": "0.4564",
              "spider_num": 7, "status": True},
             {"name": "ppt", "ip": "111.115.111.111", "cpu_avg": 95, "mem_avg": "0.4565",
-             "spider_num": 8, "status": True},
+             "spider_num": 8, "status": False},
             {"name": "ppt", "ip": "111.116.111.111", "cpu_avg": 65, "mem_avg": "0.4566",
              "spider_num": 0, "status": True},
             {"name": "ppt", "ip": "111.117.111.111", "cpu_avg": 15, "mem_avg": "0.4567",

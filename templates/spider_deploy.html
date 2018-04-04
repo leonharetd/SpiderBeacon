@@ -18,7 +18,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                <select id="projectValue" class="form-control select2 select2-hidden-accessible pro_select"
+                        style="width: 100%;" tabindex="-1" aria-hidden="true">
                   <option selected="selected">Alabama</option>
                   <option>Alaska</option>
                   <option>California</option>
@@ -28,13 +29,13 @@
                   <option>Washington</option>
                 </select>
               </div>
-              <!-- /.form-group -->
             </div>
-            <!-- /.col -->
+
             <div class="col-md-6">
               <div class="form-group">
                 <label>Spider</label>
-                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                <select id="spiderValue" class="form-control select2 select2-hidden-accessible spider_select"
+                        style="width: 100%;" tabindex="-1" aria-hidden="true">
                   <option selected="selected">Alabama</option>
                   <option>Alaska</option>
                   <option>California</option>
@@ -44,42 +45,48 @@
                   <option>Washington</option>
                 </select>
               </div>
-              <!-- /.form-group -->
             </div>
 
             <div class="col-md-12">
             <label>Project Info</label>
-            <input type="text" class="form-control" placeholder="Enter ..." disabled="">
+            <input type="text" id="pro_info" class="form-control" placeholder="Enter ..." disabled="">
             </div>
-            <div class="col-md-12">
 
+            <div class="col-md-12">
               <div class="radio">
-                <label>
+                <label id="label1">
                   <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
                   Period
                 </label>
               </div>
               <div class="radio">
-                <label>
+                <label id="label2">
                   <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
                   normal
                 </label>
               </div>
+                <div id="dingshi" class="form-group">
+                    <label>定时任务</label>
+                    <input type="text" id="dingValue" class="form-control" placeholder="Enter ..." value="">
+                </div>
             </div>
+
             <div class="col-md-12">
-            <div class="form-group">
-                  <label>Select Multiple</label>
-                  <select multiple="" class="form-control">
+                <div class="form-group">
+                    <label>Select Multiple</label>
+                    <select multiple="" id="serversValue" class="form-control" style="height: 190px;">
                     <option>option 1</option>
                     <option>option 2</option>
                     <option>option 3</option>
                     <option>option 4</option>
                     <option>option 5</option>
                   </select>
+                    <!--<span id="helpblock" class="help-block" hidden>Help block with error</span>-->
                 </div>
             </div>
+
             <div class="col-md-2">
-            <button type="button" class="btn btn-block btn-info">DEPLOY</button>
+                <button type="button" class="btn btn-block btn-info">DEPLOY</button>
             </div>
         </div>
     </div>
@@ -90,19 +97,23 @@
 <script src="{{ static_url('scripts/bootstrap.min.js')}}"></script>
 <script src="{{ static_url('scripts/select2.full.min.js')}}"></script>
 <script src="{{ static_url('scripts/icheck.min.js')}}"></script>
+<script src="{{ static_url('scripts/spider_deploy.js')}}"></script>
 <script>
-        //Initialize Select2 Elements
+    //Initialize Select2 Elements
     $('.select2').select2()
-  //iCheck for checkbox and radio inputs
+
+    //iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
       checkboxClass: 'icheckbox_minimal-blue',
       radioClass   : 'iradio_minimal-blue'
     })
+
     //Red color scheme for iCheck
     $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
       checkboxClass: 'icheckbox_minimal-red',
       radioClass   : 'iradio_minimal-red'
     })
+
     //Flat red color scheme for iCheck
     $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
       checkboxClass: 'icheckbox_flat-green',

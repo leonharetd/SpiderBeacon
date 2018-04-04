@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content_header %}
+  <h1>Spider Dashboard</h1>
+  <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="#">监控</a></li>
+      <li class="active">集群监控</li>
+  </ol>
+{% end block %}
+{% block content_body %}
+<link rel="stylesheet" href="{{ static_url('css/fileinput.css') }}">
+<div class="container-fluid">
+        <form enctype="multipart/form-data">
+            <input id="file" class="file" type="file" multiple>
+        </form>
+</div>
+<section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+              <div class="box-header">
+              <h3 class="box-title">Deploy History</h3>
+            </div>
+              <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>username</th>
+                  <th>group</th>
+                  <th>pack name</th>
+                  <th>upload time</th>
+                  <th>version</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for info in deploy_info %}
+                  <tr>
+                      <td>{{ info["username"] }}</td>
+                      <td>{{ info["group"] }}</td>
+                      <td>{{ info["pack_name"] }}</td>
+                      <td>{{ info["create_time"] }}</td>
+                      <td>{{ info["version"] }}</td>
+                  </tr>
+                {% end for %}
+                </tbody>
+              </table>
+            </div>
+              <div class="box-footer">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+</section>
+<script src="{{ static_url('scripts/jquery.min.js') }}"></script>
+<script src="{{ static_url('scripts/fileinput.js') }}"></script>
+<script>
+    $("#file").fileinput({
+        language: 'zh',
+        showUpload: true, //是否显示上传按钮
+        allowedFileExtensions: ['egg'],
+        showPreview: true, //是否显示预览
+        uploadUrl: '/spider_deploy', // you must set a valid URL here else you will get an error
+        overwriteInitial: false,
+        maxFileSize: 1000,
+        maxFilesNum: 10
+    });
+</script>
+{% end block %}
+
+

@@ -20,8 +20,8 @@ class ScrapyBIL(BaseBIL):
     def get_job_id(self):
         return self.redis_action.incr("schedule_job_id")
 
-    def update_info(self, query, info):
-        self.mongo_action.update("job_running", query, info)
+    def update_info(self, query, info, **kwargs):
+        self.mongo_action.update("job_running", query, info, **kwargs)
 
 
 if __name__ == "__main__":

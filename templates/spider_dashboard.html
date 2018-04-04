@@ -3,9 +3,7 @@
 {% block content_header %}
   <h1>Spider Dashboard</h1>
   <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-      <li><a href="#">集群监控</a></li>
-      <li class="active">集群监控</li>
+        <button type="button" class="btn btn-block btn-success pull-left">Success</button>
   </ol>
 {% end block %}
 
@@ -29,12 +27,13 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>服务器</th>
-                  <th>ip</th>
-                  <th>cpu均值</th>
-                  <th>mem均值</th>
-                  <th>爬虫部署数量</th>
-                  <th>状态</th>
+                  <th>Job id</th>
+                  <th>Spider Name</th>
+                  <th>Group</th>
+                  <th>User</th>
+                  <th>Runtime</th>
+                  <th>Start time</th>
+                  <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,6 +46,7 @@
                       <td>{{ machine["mem_avg"] }}</td>
                       <td>{{ machine["spider_num"] }}</td>
                       <td>{{ machine["status"] }}</td>
+                      <td><span class="label label-primary"><i class="fa fa-clock-o"></i>PENDING</span></td>
                   </tr>
                 {% end for %}
                 </tbody>
@@ -75,16 +75,16 @@
               <table id="example2" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>服务器</th>
-                  <th>ip</th>
-                  <th>cpu均值</th>
-                  <th>mem均值</th>
-                  <th>爬虫部署数量</th>
-                  <th>状态</th>
+                  <th>Job id</th>
+                  <th>Spider Name</th>
+                  <th>Group</th>
+                  <th>User</th>
+                  <th>Runtime</th>
+                  <th>Start time</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-
                 {% for machine in cluster %}
                   <tr>
                       <td>{{ machine["name"] }}</td>
@@ -93,6 +93,10 @@
                       <td>{{ machine["mem_avg"] }}</td>
                       <td>{{ machine["spider_num"] }}</td>
                       <td>{{ machine["status"] }}</td>
+                      <td>
+                          <a class="btn btn-info btn-xs">MORE</a>
+                          <a class="btn btn-warning btn-xs">CANCLE</a>
+                      </td>
                   </tr>
                 {% end for %}
                 </tbody>
@@ -121,13 +125,13 @@
               <table id="example3" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <!--<th><input type="checkbox" class="flat-red" checked></th>-->
-                  <th>服务器</th>
-                  <th>ip</th>
-                  <th>cpu均值</th>
-                  <th>mem均值</th>
-                  <th>爬虫部署数量</th>
-                  <th>状态</th>
+                  <th>Job id</th>
+                  <th>Spider Name</th>
+                  <th>Group</th>
+                  <th>User</th>
+                  <th>Runtime</th>
+                  <th>Start time</th>
+                  <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -141,6 +145,11 @@
                       <td>{{ machine["mem_avg"] }}</td>
                       <td>{{ machine["spider_num"] }}</td>
                       <td>{{ machine["status"] }}</td>
+                      <td>
+                          <span class="label label-success">FINISHED</span>
+                          <span class="label label-danger">CANCELED</span>
+                      </td>
+
                   </tr>
                 {% end for %}
                 </tbody>

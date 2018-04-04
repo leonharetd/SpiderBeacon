@@ -11,6 +11,7 @@ class ScrapyHandler(BaseHandler):
     def post(self):
         scrapy_bil = ScrapyBIL()
         action = self.get_argument("action")
+        self.write({"message": "ok"})
         if action == "watcher":
 
             spider_info = {
@@ -25,21 +26,10 @@ class ScrapyHandler(BaseHandler):
                 "status": self.get_argument("status"),
                 "job_id": self.get_argument("job_id")
             }
-            if spider_info["status"] == "start":
-                # 初始化状态
-                job_id = scrapy_bil.get_job_id()
-                self.write({"job_id": job_id})
-                spider_info["job_id"] = job_id
-                scrapy_bil.insert_info("job_running", spider_info)
-            elif spider_info["status"] == "running":
-                # 更新状态
-                self.write({"message": "ok"})
-                scrapy_bil.update_info({"job_id": spider_info["job_id"],
-                                        "project_name": spider_info["project_name"],
-                                        "spider_name": spider_info["spider_name"]}, spider_info)
+            scrapy_bil.update_info({"job_id": spider_info["job_id"],
+                                    "project_name": spider_info["project_name"],
+                                    "spider_name": spider_info["spider_name"]}, spider_info, s_upsert=True)
 
-            elif spider_info["status"] == "finished":
-                spider_info["status"] = "finished"
-                self.write({"message": "ok"})
+            if spider_info["status"] == "finished":
                 scrapy_bil.insert_info("job_history", spider_info)
 

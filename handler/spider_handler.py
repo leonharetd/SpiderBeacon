@@ -26,13 +26,13 @@ class SpiderDashBoardHandler(BaseHandler):
         self.render('spider_dashboard.html', cluster=cluster)
 
 
-class SpiderDeployHandler(BaseHandler):
+class SpiderUploadHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
         spider_depoly = SpiderDeployBIL()
         deploy_info = spider_depoly.get_deploy_info()
-        self.render('spider_deploy.html', deploy_info=deploy_info)
+        self.render('spider_upload.html', deploy_info=deploy_info)
 
     @tornado.web.authenticated
     def post(self):
@@ -50,6 +50,17 @@ class SpiderDeployHandler(BaseHandler):
         spider_depoly.save_upload_file(file_metas[0]["body"], pack_name)
         spider_depoly.upsert_deploy_info(deploy_info)
         self.write({"message": "ok"})
+
+
+class SpiderDeployHandler(BaseHandler):
+
+    @tornado.web.authenticated
+    def get(self):
+        self.render('spider_deploy.html')
+
+    @tornado.web.authenticated
+    def post(self):
+        pass
 
 
 class SpiderDashBoardDetailHandler(BaseHandler):

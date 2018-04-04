@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content_header %}
+  <link rel="stylesheet" href="{{ static_url('css/iCheck/all.css')}}">
+  <link rel="stylesheet" href="{{ static_url('css/select2.min.css')}}">
   <h1>Spider Dashboard</h1>
   <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
@@ -9,73 +11,103 @@
   </ol>
 {% end block %}
 {% block content_body %}
-<link rel="stylesheet" href="{{ static_url('css/fileinput.css') }}">
-<div class="container-fluid">
-        <form enctype="multipart/form-data">
-            <input id="file" class="file" type="file" multiple>
-        </form>
-</div>
-<section class="content">
-      <div class="row">
-        <div class="col-xs-12">
+<div class="box box-warning">
+    <div class="box-body">
 
-          <div class="box">
-              <div class="box-header">
-              <h3 class="box-title">Deploy History</h3>
-            </div>
-              <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>username</th>
-                  <th>group</th>
-                  <th>pack name</th>
-                  <th>upload time</th>
-                  <th>version</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {% for info in deploy_info %}
-                  <tr>
-                      <td>{{ info["username"] }}</td>
-                      <td>{{ info["group"] }}</td>
-                      <td>{{ info["pack_name"] }}</td>
-                      <td>{{ info["create_time"] }}</td>
-                      <td>{{ info["version"] }}</td>
-                  </tr>
-                {% end for %}
-                </tbody>
-              </table>
-            </div>
-              <div class="box-footer">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
+        <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Project</label>
+                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option selected="selected">Alabama</option>
+                  <option>Alaska</option>
+                  <option>California</option>
+                  <option>Delaware</option>
+                  <option>Tennessee</option>
+                  <option>Texas</option>
+                  <option>Washington</option>
+                </select>
               </div>
-          </div>
-          <!-- /.box -->
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Spider</label>
+                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  <option selected="selected">Alabama</option>
+                  <option>Alaska</option>
+                  <option>California</option>
+                  <option>Delaware</option>
+                  <option>Tennessee</option>
+                  <option>Texas</option>
+                  <option>Washington</option>
+                </select>
+              </div>
+              <!-- /.form-group -->
+            </div>
+
+            <div class="col-md-12">
+            <label>Project Info</label>
+            <input type="text" class="form-control" placeholder="Enter ..." disabled="">
+            </div>
+            <div class="col-md-12">
+
+              <div class="radio">
+                <label>
+                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                  Period
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                  normal
+                </label>
+              </div>
+            </div>
+            <div class="col-md-12">
+            <div class="form-group">
+                  <label>Select Multiple</label>
+                  <select multiple="" class="form-control">
+                    <option>option 1</option>
+                    <option>option 2</option>
+                    <option>option 3</option>
+                    <option>option 4</option>
+                    <option>option 5</option>
+                  </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+            <button type="button" class="btn btn-block btn-info">DEPLOY</button>
+            </div>
         </div>
-      </div>
-</section>
-<script src="{{ static_url('scripts/jquery.min.js') }}"></script>
-<script src="{{ static_url('scripts/fileinput.js') }}"></script>
+    </div>
+</div>
+
+<!-- jQuery 3 -->
+<script src="{{ static_url('scripts/jquery.min.js')}}"></script>
+<script src="{{ static_url('scripts/bootstrap.min.js')}}"></script>
+<script src="{{ static_url('scripts/select2.full.min.js')}}"></script>
+<script src="{{ static_url('scripts/icheck.min.js')}}"></script>
 <script>
-    $("#file").fileinput({
-        language: 'zh',
-        showUpload: true, //是否显示上传按钮
-        allowedFileExtensions: ['egg'],
-        showPreview: true, //是否显示预览
-        uploadUrl: '/spider_deploy', // you must set a valid URL here else you will get an error
-        overwriteInitial: false,
-        maxFileSize: 1000,
-        maxFilesNum: 10
-    });
+        //Initialize Select2 Elements
+    $('.select2').select2()
+  //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass   : 'iradio_minimal-blue'
+    })
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass   : 'iradio_minimal-red'
+    })
+    //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass   : 'iradio_flat-green'
+    })
 </script>
 {% end block %}
-
 

@@ -48,6 +48,7 @@ function get_ProInfo_value(){
 }
 
 $(".pro_select").change(function(){
+    get_Spider_By_Pro();
     get_ProInfo_value();
 })
 

@@ -1,10 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content_header %}
+<h1>Timed Task Dashboard</h1>
+
+{% end block %}
+
+{% block content_body %}
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Next Jobs</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Job id</th>
+                            <th>Spider Name</th>
+                            <th>Group</th>
+                            <th>User</th>
+                            <th>Runtime</th>
+                            <th>Start time</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for machine in cluster %}
+                        <tr>
+                            <td>{{ machine["name"] }}</td>
+                            <td>{{ machine["ip"] }}</td>
+                            <td>{{ machine["cpu_avg"] }}</td>
+                            <td>{{ machine["mem_avg"] }}</td>
+                            <td>{{ machine["spider_num"] }}</td>
+                            <td>{{ machine["status"] }}</td>
+                            <td><span class="label label-primary"><i class="fa fa-clock-o"></i>PENDING</span></td>
+                        </tr>
+                        {% end for %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+
+{% end block %}
+
+

@@ -12,6 +12,7 @@ from handler.manger_handler import MembersManageHandler, ProjectManageHandler
 from handler.spider_handler import SpiderUploadHandler, SpiderDeployHandler
 from handler.spider_handler import SpiderDashBoardHandler, SpiderDashBoardDetailHandler
 from handler.scrapy_handler import ScrapyHandler
+from handler.jobs_handler import JobsDashBoardHandler
 from tornado.options import define, options
 
 define("port", default=8000, help="run on the given port", type=int)
@@ -26,6 +27,7 @@ routes = [
     (r"/spider_dashboard_detail", SpiderDashBoardDetailHandler),
     (r"/spider_upload", SpiderUploadHandler),
     (r"/spider_deploy", SpiderDeployHandler),
+    (r"/jobs_dashboard", JobsDashBoardHandler),
 
     (r"/members_manage", MembersManageHandler),
     (r"/project_manage", ProjectManageHandler),

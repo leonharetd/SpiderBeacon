@@ -48,7 +48,7 @@
                   <tr>
                       <td>{{ machine["name"] }}</td>
                       <td>{{ machine["ip"] }}</td>
-                      <td style="width: 190px;">
+                      <td style="width: 20%;">
                           <div class="progress progress-striped active">
                           {% if machine['cpu_avg']<=25 %}
                               <input type="hidden" value="222" onload="increment({{ machine['cpu_avg'] }},{{ machine['ip'] }})";/>
@@ -87,8 +87,8 @@
                           {% end %}
                           </div>
                       </td>
-                      <td style="width:100px;">
-                          <span class="linecustom">10,8,9,3,5,8,5,7,10,8,9,3,5,8,5,7,10,8,9,3,5,8,5,7</span>
+                      <td style="width:16%;">
+                          <span class="linecustom">10,8,9,3,5,8,5,7,10,8,9,3,5,8,5,7,10,8,9,3,5,8,5,7,10,8,9,3,5,8</span>
                       </td>
                       <td>{{ machine["spider_num"] }}</td>
                       {% if machine['status'] %}

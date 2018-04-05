@@ -31,6 +31,14 @@ def filter_with_username(func):
     return wrapper
 
 
+def filter_with_creator_group(func):
+    def wrapper(self, creator):
+        jobs = list(func(self, creator))
+        news_jobs = filter(lambda x: x["group"] == x["username"], jobs)
+        return news_jobs
+    return wrapper
+
+
 class BaseBIL(object):
 
     def __init__(self):

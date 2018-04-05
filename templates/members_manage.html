@@ -21,20 +21,18 @@
                 <div class="box-header">
                     <h3 class="box-title"></h3>
                     <div class="box-tools">
-                        <button id="js-modal-holder"
-                                type="button"
+                        <button type="button"
                                 class="btn btn-block btn-success"
                                 data-toggle="modal"
                                 style="width: 200px;padding-right:3px;border-radius: 5px;  margin-right:210px"
                                 data-target="#job-run-modal">Add Group</button>
                     </div>
                                         <div class="box-tools">
-                        <button id="js-modal-holder"
-                                type="button"
+                        <button type="button"
                                 class="btn btn-block btn-danger"
                                 data-toggle="modal"
                                 style="width: 200px;padding-right:3px;border-radius: 5px;  margin-right:0px"
-                                data-target="#job-run-modal">Change Group</button>
+                                data-target="#job-run-modal-del">Delete Group</button>
                     </div>
                 </div>
                 <div class="box-body">
@@ -47,7 +45,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for group in groups %}
+                        {% for group in all_groups %}
                         <tr>
                             {% for name in group %}
                             <td>{{ name}}</td>
@@ -71,20 +69,18 @@
                 <div class="box-header">
                     <h3 class="box-title"></h3>
                     <div class="box-tools">
-                        <button id="js-modal-holder"
-                                type="button"
+                        <button type="button"
                                 class="btn btn-block btn-success"
                                 data-toggle="modal"
                                 style="width: 200px;padding-right:4px;border-radius: 5px;  margin-right:210px"
                                 data-target="#job-run-modal-member">Add User</button>
                     </div>
                                         <div class="box-tools">
-                        <button id="js-modal-holder"
-                                type="button"
+                        <button type="button"
                                 class="btn btn-block btn-danger"
                                 data-toggle="modal"
                                 style="width: 200px;padding-right:4px;border-radius: 5px;  margin-right:0px"
-                                data-target="#job-run-modal-member">Delete User</button>
+                                data-target="#job-run-modal-member-del">Delete User</button>
                     </div>
                 </div>
                 <div class="box-body">
@@ -162,7 +158,35 @@
     </div>
 </div>
 
-
+<!-- 添加管理组－－触发事件：job-run-modal -->
+<div class="modal fade" id="job-run-modal-del" tabindex="-1" role="dialog" style="border-radius:0.4375rem;"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">删除组</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" role="form" id="delGroupForm" width="480" height="450">
+                    <!-- text input -->
+                    <div class="form-group">
+                      <label>Group</label>
+                      <select id="del_group_name" class="form-control">
+                          {% for group in creator_group %}
+                            <option>{{ group["username"] }}</option>
+                          {% end for %}
+                      </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="del_group">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- 添加组内成员－－触发事件：job-run-modal-member -->
 <div class="modal fade" id="job-run-modal-member" tabindex="-1" role="dialog" style="border-radius:0.4375rem;"
      aria-labelledby="myModalLabel" aria-hidden="true">
@@ -170,23 +194,24 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">添加管理成员</h4>
+                <h4 class="modal-title">添加管理成员</h4>
             </div>
             <div class="modal-body">
                 <form action="" method="post" role="form" id="addUserForm" width="480" height="450">
                     <!-- text input -->
                     <div class="form-group">
                         <label>用户名</label>
-                        <input type="text" class="form-control" placeholder="Enter ...">
+                        <input type="text" id="user_name" class="form-control" placeholder="Enter ...">
+                    </div>
+                    <div class="form-group">
+                        <label>password</label>
+                        <input type="text" id="user_passwd" class="form-control" placeholder="Enter ...">
                     </div>
                     <!-- select -->
                     <div class="form-group">
                         <label>用户权限范围</label>
-                        <select class="form-control">
-                            <option>只可查看</option>
-                            <option>查看、删除</option>
-                            <option>查看、添加、删除</option>
-                            <option>admin权限</option>
+                        <select id="user_authority" class="form-control">
+                            <option>0</option>
                         </select>
                     </div>
                     <!-- textarea -->
@@ -204,6 +229,47 @@
     </div>
 </div>
 
+<!-- 删除组内成员－－触发事件：job-run-modal-member -->
+<div class="modal fade" id="job-run-modal-member-del" tabindex="-1" role="dialog" style="border-radius:0.4375rem;"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">删除成员</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" role="form" id="delUserForm" width="480" height="450">
+                    <div class="form-group">
+                      <label>Group</label>
+                      <select id="del_user_group" class="form-control">
+                          {% for group in creator_group %}
+                            <option>{{ group["username"] }}</option>
+                          {% end for %}
+                      </select>
+                    </div>
+                      <div class="form-group">
+                          <label>Group</label>
+                          <select id="del_user_name" class="form-control">
+                              {% for group in user_by_group %}
+                                <option>{{ group }}</option>
+                              {% end for %}
+                          </select>
+                      </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="del_user">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div  style="display: none;">
+    <span id="uesr_by_group">
+    {{user_by_group}}
+</span>
+</div>
 <script src="{{ static_url('scripts/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('scripts/member_manage.js') }}"></script>
 

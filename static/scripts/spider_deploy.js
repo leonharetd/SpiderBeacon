@@ -1,8 +1,27 @@
-function get_deploy_progress(){
-    $.ajax({
-        url:"",
-
-    })
+//根据project，获取spider内容
+function get_Spider_By_Pro(){
+    var pro_value = $('#projectValue option:selected').val();
+    if(pro_value){
+        $.ajax({
+            url: "",
+            data: pro_value,
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            success: function(data){
+                if(data.status == 'ok'){
+                    var html = '';
+                    var spiList = data.message;
+                    f (spiList.length > 0) {
+                        for (var i = 0; i < spiList.length; i++) {
+                            html += '<option value="' + spiList[i] + '>' + spiList[i] + '</option>';
+                        }
+                        $('#spiderValue').html(html);
+                    }
+                }
+            }
+        });
+    }
 }
 
 //获取project_info的值
@@ -48,6 +67,7 @@ $("#label2").click(function(){
      $("#dingshi").hide();
 })
 
+//点击部署按钮
 $(".btn-info").click(function(){
     var projectValue = $('#projectValue option:selected').val();
     var spiderValue = $('#spiderValue option:selected').val();

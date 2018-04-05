@@ -68,20 +68,27 @@ $('#del_user').click(function(){
     user['username'] = $("#user_name").val();
     user['passward'] = $("#user_passwd").val();
     user['authority'] = $("#user_authority option:selected").val();
-    user['action'] = "add_user";
-    $.ajax({
-        url : '/members_manage',
-        data : user,
-        type : 'POST',
-        dataType : 'json',
-        async:true,
-        success : function(data) {
-            alert(data.result);
-            $('.modal').modal('hide')
-            location.reload();
-        }
-     });
+    user['action'] = "del_user";
+    if(user['username'] && user['passward']){
+        $.ajax({
+            url : '/members_manage',
+            data : user,
+            type : 'POST',
+            dataType : 'json',
+            async:true,
+            success : function(data) {
+                alert(data.result);
+                $('.modal').modal('hide')
+                location.reload();
+            }
+         });
+      }else{
+        alert("删除失败");
+      }
 });
+
+
+
 
 //$("#button").click(function(){
 //    var newUrl = '/news/';    //设置新提交地址

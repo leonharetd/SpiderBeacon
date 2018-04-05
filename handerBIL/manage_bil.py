@@ -3,6 +3,8 @@
 from base_bil import BaseBIL
 from itertools import groupby
 from operator import itemgetter
+from datetime import datetime
+import hashlib
 from base_bil import get_auth, filter_with_group, filter_with_creator_group
 from DBaction.settings import MONGODB_PORT, MONGODB_HOST
 from DBaction.mongo_action import MongoAction
@@ -60,18 +62,54 @@ class MembersManageBIL(BaseBIL):
             return True
         return False
 
-    def insert_member(self, info):
-        self.mongo_action.insert("user_info", info)
-
-    def update_members(self, query, info):
-        self.mongo_action.update_many("user_info", query, info)
-
-    def change_projects_member(self, collect, query, info):
-        self.mongo_action.update_many(collect, query, info)
-
     def delete_member(self, info):
         member = self.mongo_action.find_one("user_info", {"group": info["group"], "username": info["username"]})
         self.mongo_action.delete_one("user_info", {"_id": member["_id"]})
+
+    def add_group(self, group, password, auth, creator):
+        if not self.group_name_exists(group):
+            info = {
+                "username": group,
+                "group": group,
+                "password": hashlib.md5(password).hexdigest(),
+                "authority": int(auth),
+                "creator": creator,
+                "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+            self.mongo_action.insert("user_info", info)
+            return "group add"
+        return "group exists"
+
+    def add_user(self, group, user_name, password, auth, creator):
+        if not self.user_name_exists(user_name):
+            info = {
+                "username": user_name,
+                "group": group,
+                "password": password,
+                "authority": auth,
+                "creator": creator,
+                "create_time": datetime.now().strftime("%b %d %Y %H:%M:%S")
+            }
+            self.mongo_action.insert("user_info", info)
+            return "user add"
+        return "user exists"
+
+    def change_delete_group_relation(self, group, new_group, creator):
+        self.delete_member({"group": group, 'username': group})
+        self.mongo_action.update_many("user_info", {"group": group}, {"$set": {"group": new_group}})
+        self.mongo_action.update_many("user_info", {"creator": group}, {"$set": {"creator": creator}})
+        self.mongo_action.update_many("project_info", {"group": group}, {"$set": {"group": new_group}})
+        self.mongo_action.update_many("job_running", {"group": group}, {"$set": {"group": new_group}})
+        return "group delete"
+
+    def change_delete_user_relation(self, group, user_name, new_user):
+        self.delete_member({"group": group, 'username': user_name})
+        self.mongo_action.update_many("user_info", {"creator": user_name}, {"$set": {"creator": new_user}})
+        self.mongo_action.update_many("project_info", {"creator": user_name}, {"$set": {"creator": new_user}})
+        self.mongo_action.update_many("job_running", {"creator": user_name}, {"$set": {"creator": new_user}})
+        return "user delete"
+
+
 
 
 class ProjectManageBIL(BaseBIL):

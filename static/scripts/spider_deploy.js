@@ -12,7 +12,7 @@ function get_Spider_By_Pro(){
                 if(data.status == 'ok'){
                     var html = '';
                     var spiList = data.message;
-                    f (spiList.length > 0) {
+                    if (spiList.length > 0){
                         for (var i = 0; i < spiList.length; i++) {
                             html += '<option value="' + spiList[i] + '>' + spiList[i] + '</option>';
                         }

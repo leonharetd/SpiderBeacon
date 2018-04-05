@@ -65,11 +65,10 @@ $('#add_user').click(function(){
 //删除项目组成员
 $('#del_user').click(function(){
     var user = {};
-    user['username'] = $("#user_name").val();
-    user['passward'] = $("#user_passwd").val();
-    user['authority'] = $("#user_authority option:selected").val();
+    user['username'] = $("#del_user_name option:selected").val();
+    user['group'] = $("#cur_group_name").attr("data-value");
     user['action'] = "del_user";
-    if(user['username'] && user['passward']){
+    if(user['username']){
         $.ajax({
             url : '/members_manage',
             data : user,
@@ -86,12 +85,3 @@ $('#del_user').click(function(){
         alert("删除失败");
       }
 });
-
-
-
-
-//$("#button").click(function(){
-//    var newUrl = '/news/';    //设置新提交地址
-//    $("#myform").attr('action',newUrl);    //通过jquery为action属性赋值
-//    $("#myform").submit();    //提交ID为myform的表单
-//   });

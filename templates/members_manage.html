@@ -8,16 +8,9 @@
     <li><a href="#">Members</a></li>
     <li class="active">成员管理</li>
 </ol>
-
 {% end block %}
 
 {% block content_body %}
-
-<div class="box-body">
-    <p class="text-red">
-        充会员看更多项目。现在升级会员，更有豪礼相送！快拨打电话吧
-    </p>
-</div>
 
 <!-- Main content -->
 <section class="content">
@@ -96,7 +89,7 @@
                         <thead>
                         <tr>
                             <td colspan="10">
-                                <h6> ALL MEMBER NAME</h6>
+                                <h6 id="cur_group_name" data-value={{group_name}}> {{group_name}} MEMBERS</h6>
                             </td>
                         </tr>
                         </thead>
@@ -247,19 +240,11 @@
             </div>
             <div class="modal-body">
                 <form action="" method="post" role="form" id="delUserForm" width="480" height="450">
-                    <div class="form-group">
-                      <label>Group</label>
-                      <select id="del_user_group" class="form-control">
-                          {% for group in creator_group %}
-                            <option>{{ group["username"] }}</option>
-                          {% end for %}
-                      </select>
-                    </div>
                       <div class="form-group">
                           <label>Users</label>
                           <select id="del_user_name" class="form-control">
-                              {% for group in user_by_group %}
-                                <option>{{ group }}</option>
+                              {% for group in group_members %}
+                                <option>{{ group["username"] }}</option>
                               {% end for %}
                           </select>
                       </div>
@@ -272,11 +257,7 @@
         </div>
     </div>
 </div>
-<div  style="display: none;">
-    <span id="uesr_by_group">
-    {{user_by_group}}
-</span>
-</div>
+
 <script src="{{ static_url('scripts/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('scripts/member_manage.js') }}"></script>
 

@@ -16,63 +16,37 @@ class MembersManageHandler(BaseHandler):
         group = self.get_secure_cookie("g")
         user_name = self.get_secure_cookie("u")
         create_groups = members_manage.get_create_group(creator=user_name)
-        members = members_manage.filter_group_members(group=group)
-        members = members_manage.get_format_group_members(members)
-        user_by_group = members_manage.get_members_user(user_name)
+
+        group_members = members_manage.filter_group_members(group=group)
+        members = members_manage.get_format_group_members(group_members)
         self.render('members_manage.html', all_groups=all_groups, creator_group=create_groups,
-                    user_by_group={g[0]: map(lambda x: x["username"], g[1]) for g in user_by_group}, members=members)
+                    group_members=group_members, members=members, group_name=group.upper())
 
     @tornado.web.authenticated
     def post(self):
         members_manage = MembersManageBIL()
         action = self.get_argument("action")
         group = self.get_argument("group")
+        status = ""
         if action.startswith("add"):
             password = self.get_argument("passward")
             authority = self.get_argument("authority")
             if action == "add_group":
-                if not members_manage.group_name_exists(group):
-                    info = {
-                        "username": group,
-                        "group": group,
-                        "password": hashlib.md5(password).hexdigest(),
-                        "authority": int(authority),
-                        "creator": self.get_secure_cookie("u"),
-                        "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    }
-                    members_manage.insert_member(info)
-                    self.write({"result": "ok"})
+                status = members_manage.add_group(group, password, authority, self.get_secure_cookie("u"))
+                self.write({"result": "{0}".format(status)})
             elif action == "add_user":
                 user_name = self.get_argument("username")
                 group = self.get_secure_cookie("g")
-                if not members_manage.user_name_exists(user_name):
-                    info = {
-                        "username": user_name,
-                        "group": group,
-                        "password": password,
-                        "authority": authority,
-                        "creator": self.get_secure_cookie("u"),
-                        "create_time": datetime.now().strftime("%b %d %Y %H:%M:%S")
-                    }
-                    members_manage.insert_member(info)
-                    self.write({"result": "user add"})
+                status = members_manage.add_user(group, user_name, password, authority, self.get_secure_cookie("u"))
         elif action.startswith("del"):
             if action == "del_group":
-                new_group = self.get_secure_cookie("g")
-                members_manage.delete_member({"group": group, 'username': group})
-                members_manage.update_members({"group": group}, {"$set": {"group": new_group}})
-                members_manage.update_members({"creator": group}, {"$set": {"creator": self.get_secure_cookie("u")}})
-                members_manage.change_projects_member("project_info", {"group": group}, {"$set": {"group": new_group}})
-                members_manage.change_projects_member("job_running", {"group": group}, {"$set": {"group": new_group}})
-                self.write({"result": "group delete"})
-                # todo 定时任务的修改
+                status = members_manage.change_delete_group_relation(group, self.get_secure_cookie("g"),
+                                                                     self.get_secure_cookie("u"))
             elif action == "del_user":
-                new_user = self.get_secure_cookie("u")
                 user_name = self.get_argument("username")
-                members_manage.update_members({"creator": user_name}, {"$set": {"creator": new_user}})
-                members_manage.change_projects_member("project_info", {"creator": user_name}, {"$set": {"creator": new_user}})
-                members_manage.change_projects_member("job_running", {"creator": user_name}, {"$set": {"creator": new_user}})
-                # todo 定时任务的修改
+                group = self.get_secure_cookie("g")
+                status = members_manage.change_delete_user_relation(group, user_name, self.get_secure_cookie("u"))
+        self.write({"result": "{0}".format(status)})
 
 
 class ProjectManageHandler(BaseHandler):

@@ -40,7 +40,7 @@
                   <tr>
                       <td>{{ info["username"] }}</td>
                       <td>{{ info["group"] }}</td>
-                      <td>{{ info["pack_name"] }}</td>
+                      <td>{{ info["project"] }}</td>
                       <td>{{ info["create_time"] }}</td>
                       <td>{{ info["version"] }}</td>
                   </tr>
@@ -69,10 +69,12 @@
         language: 'zh',
         showUpload: true, //是否显示上传按钮
         allowedFileExtensions: ['egg'],
+        dropZoneEnabled: true,
         showPreview: true, //是否显示预览
-        uploadUrl: '/spider_deploy', // you must set a valid URL here else you will get an error
+        uploadUrl: '/spider_upload', // you must set a valid URL here else you will get an error
         overwriteInitial: false,
         maxFileSize: 1000,
+        showCaption: true,
         maxFilesNum: 10
     });
 </script>

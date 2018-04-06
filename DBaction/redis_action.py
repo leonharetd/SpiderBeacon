@@ -17,6 +17,12 @@ class RedisAction(object):
     def incr(self, key):
         return self.redis.incr(key)
 
+    def rpush(self, name, value):
+        return self.redis.rpush(name, value)
+
+    def queue_delete(self, name):
+        return self.redis.delete(name)
+
 
 if __name__ == "__main__":
     # temp = RedisAction()

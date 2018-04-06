@@ -776,7 +776,7 @@
                     pdf: tPdf,
                     other: tOther
                 },
-                allowedPreviewTypes: ['image', 'html', 'text', 'video', 'audio', 'flash', 'pdf', 'object'],
+                allowedPreviewTypes: ['image', 'html', 'video', 'audio', 'flash', 'pdf'],
                 previewTemplates: {},
                 previewSettings: {
                     image: {width: "auto", height: "auto", 'max-width': "100%", 'max-height': "100%"},

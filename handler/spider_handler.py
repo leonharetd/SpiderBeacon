@@ -3,7 +3,7 @@
 import tornado.web
 from datetime import datetime
 from base_handler import BaseHandler
-from handerBIL.spider_bil import SpiderDeployBIL
+from handerBIL.spider_bil import SpiderUploadBIL
 
 
 class SpiderDashBoardHandler(BaseHandler):
@@ -30,25 +30,26 @@ class SpiderUploadHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        spider_depoly = SpiderDeployBIL()
-        deploy_info = spider_depoly.get_deploy_info()
+        spider_depoly = SpiderUploadBIL()
+        deploy_info = spider_depoly.get_deploy_project_info()
         self.render('spider_upload.html', deploy_info=deploy_info)
 
     @tornado.web.authenticated
     def post(self):
-        spider_depoly = SpiderDeployBIL()
+        spider_upload = SpiderUploadBIL()
         pack_name = self.request.files["file_data"][0]["filename"]
         deploy_info = {
             "username":  self.get_secure_cookie("u"),
             "group": self.get_secure_cookie("g"),
-            "pack_name": pack_name,
+            "project": pack_name,
             "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "creator": self.get_secure_cookie("u"),
             "version": "_".join([datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), pack_name])
         }
         file_metas = self.request.files["file_data"]
-        spider_depoly.save_upload_file(file_metas[0]["body"], pack_name)
-        spider_depoly.upsert_deploy_info(deploy_info)
+        file_path = spider_upload.save_upload_file(file_metas[0]["body"], pack_name)
+        print file_path
+        spider_upload.upsert_deploy_project_info(file_path, deploy_info)
         self.write({"message": "ok"})
 
 

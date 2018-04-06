@@ -56,7 +56,7 @@ class ProjectManageHandler(BaseHandler):
         group = self.get_secure_cookie("g")
         user_name = self.get_secure_cookie("u")
         project_manage = ProjectManageBIL()
-        projects = project_manage.get_project_auth(group=group, username=user_name)
+        projects = project_manage.get_project_auth(group=group, user_name=user_name)
         self.render('project_manage.html', projects=projects)
 
     @tornado.web.authenticated

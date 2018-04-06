@@ -10,7 +10,7 @@ class AccountException(Exception):
 def get_auth(func):
     def wrapper(self, **kwargs):
         jobs = list(func(self, **kwargs))
-        auth_tag = map(lambda x: x["group"] in kwargs["group"] and x["username"] in ["*", kwargs["username"]], jobs)
+        auth_tag = map(lambda x: x["group"] in kwargs["group"] and x["username"] in ["*", kwargs["user_name"]], jobs)
         return zip(auth_tag, jobs)
     return wrapper
 
@@ -26,7 +26,7 @@ def filter_with_group(func):
 def filter_with_username(func):
     def wrapper(self, **kwargs):
         jobs = list(func(self, **kwargs))
-        new_jobs = filter(lambda x: x["username"] in ["*", kwargs["username"]], jobs)
+        new_jobs = filter(lambda x: x["username"] in ["*", kwargs["user_name"]], jobs)
         return new_jobs
     return wrapper
 

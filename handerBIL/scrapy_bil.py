@@ -18,11 +18,9 @@ class ScrapyBIL(BaseBIL):
 
     def deploy_spider(self, project, version, egg):
         with open(egg) as fp:
-            print fp
             return self.scrapyd.add_version(project, version, fp)
 
     def get_deploy_project_spiders_name(self, project, version, egg):
-        print '#', egg
         self.deploy_spider(project, version, egg)
         spiders_name = self.scrapyd.list_spiders(project)
         return spiders_name
@@ -38,8 +36,8 @@ class ScrapyBIL(BaseBIL):
 
 if __name__ == "__main__":
     temp = ScrapyBIL(SCRAPYD_API)
-    print temp.deploy_spider("douban", "111", "../data/doubao.egg")
+    #print temp.deploy_spider("douban", "111", "../data/doubao.egg")
     print temp.scrapyd.list_projects()
-    print temp.scrapyd.list_spiders("douban")
-    print temp.scrapyd.list_jobs("douban")
-    print temp.scrapyd.schedule("douban", "book")
+    print temp.scrapyd.list_spiders("douban.egg")
+    #print temp.scrapyd.list_jobs("douban")
+    #print temp.scrapyd.schedule("douban", "book")

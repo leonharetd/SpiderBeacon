@@ -1,9 +1,10 @@
 #!/usr/bin/env Python
 # coding:utf-8
 import tornado.web
+import tornado.gen
 from datetime import datetime
 from base_handler import BaseHandler
-from handerBIL.spider_bil import SpiderUploadBIL
+from handerBIL.spider_bil import SpiderUploadBIL, SpiderDeployBIL
 
 
 class SpiderDashBoardHandler(BaseHandler):
@@ -38,16 +39,17 @@ class SpiderUploadHandler(BaseHandler):
     def post(self):
         spider_upload = SpiderUploadBIL()
         pack_name = self.request.files["file_data"][0]["filename"]
+        project = pack_name.split(".")[0]
         deploy_info = {
             "username":  self.get_secure_cookie("u"),
             "group": self.get_secure_cookie("g"),
-            "project": pack_name,
+            "project": project,
             "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "creator": self.get_secure_cookie("u"),
-            "version": "_".join([datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), pack_name])
+            "version": "_".join([datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), project])
         }
         file_metas = self.request.files["file_data"]
-        file_path = spider_upload.save_upload_file(file_metas[0]["body"], pack_name)
+        file_path = spider_upload.save_upload_file(file_metas[0]["body"], project)
         print file_path
         spider_upload.upsert_deploy_project_info(file_path, deploy_info)
         self.write({"message": "ok"})
@@ -57,11 +59,40 @@ class SpiderDeployHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        self.render('spider_deploy.html')
+        spider_deploy = SpiderDeployBIL()
+        group = self.get_secure_cookie("g")
+        user_name = self.get_secure_cookie("u")
+        groups = spider_deploy.get_project(group=group, user_name=user_name)
+        self.render('spider_deploy.html', groups=groups, spiders=[])
 
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     @tornado.web.authenticated
     def post(self):
-        pass
+        spider_deploy = SpiderDeployBIL()
+        action = self.get_argument("action")
+        if action == "get_spiders":
+            project_id = self.get_argument("project_id")
+            spiders = spider_deploy.get_spiders(project_id)["spiders_name"]
+            self.write({"status": "ok", "message": spiders})
+        elif action == "get_project_info":
+            project_id = self.get_argument("project_id")
+            spider_info = spider_deploy.get_project_info(project_id)
+            self.write({"status": "ok", "message": spider_info})
+        elif action == "deploy":
+            project = self.get_argument("project")
+            spider = self.get_argument("spider")
+            spider = self.get_argument("peird")
+            servers = self.get_argument("servers")
+            client = spider_deploy.
+            for ip in servers:
+                response = yield tornado.gen.Task(client, "{ip}:6800".format(ip=ip))
+            self.write("Hello World")
+            self.finish()
+
+
+
+
 
 
 class SpiderDashBoardDetailHandler(BaseHandler):

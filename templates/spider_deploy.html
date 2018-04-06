@@ -20,13 +20,9 @@
                 <label>Project</label>
                 <select id="projectValue" class="form-control select2 select2-hidden-accessible pro_select"
                         style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
+                    {% for group in groups %}
+                         <option project_id={{group["_id"]}}> {{ group["project"] }}</option>
+                    {% end for %}
                 </select>
               </div>
             </div>
@@ -36,20 +32,16 @@
                 <label>Spider</label>
                 <select id="spiderValue" class="form-control select2 select2-hidden-accessible spider_select"
                         style="width: 100%;" tabindex="-1" aria-hidden="true">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
+                    {% for spider in spiders %}
+                        <option > {{ spider }}</option>
+                    {% end for %}
                 </select>
               </div>
             </div>
 
-            <div class="col-md-12">
-            <label>Project Info</label>
-            <input type="text" id="pro_info" class="form-control" placeholder="Enter ..." disabled="">
+            <div class="col-md-12" id="project_Info">
+            <!--<label>Project Info</label>-->
+            <!--<input type="text" id="pro_info" class="form-control" placeholder="Enter ..." disabled="">-->
             </div>
 
             <div class="col-md-12">

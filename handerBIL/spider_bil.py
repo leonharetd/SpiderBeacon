@@ -1,7 +1,8 @@
 #!/usr/bin/env Python
 # coding:utf-8
 import os
-from base_bil import BaseBIL
+from bson.objectid import ObjectId
+from base_bil import BaseBIL, filter_with_username
 from scrapy_bil import ScrapyBIL
 from DBaction.settings import MONGODB_PORT, MONGODB_HOST, SCRAPYD_API
 from DBaction.mongo_action import MongoAction
@@ -22,13 +23,33 @@ class SpiderUploadBIL(BaseBIL):
 
     def upsert_deploy_project_info(self, file_path, info):
         spiders_name = self.scrapyd.get_deploy_project_spiders_name(info["project"], info["version"], file_path)
-        print spiders_name
         info["spiders_name"] = spiders_name
         self.mongo_action.find_and_modify("project_info", {"project": info["project"]}, info)
 
     def get_deploy_project_info(self):
         return self.mongo_action.find("project_info", {}, limit=10).sort("create_time", -1)
 
+
+
+
+class SpiderDeployBIL(BaseBIL):
+
+    def __init__(self):
+        super(SpiderDeployBIL, self).__init__()
+        self.mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
+        self.scrapyd = ScrapyBIL(SCRAPYD_API)
+
+    @filter_with_username
+    def get_project(self, group, user_name):
+        return self.mongo_action.find("project_info", {"group": group})
+
+    def get_spiders(self, project_id):
+        return self.mongo_action.find_one("project_info", {"_id": ObjectId(project_id)}, {"_id": 0})
+
+    def get_project_info(self, project_id):
+        return self.mongo_action.find_one("project_info", {"_id": ObjectId(project_id)}, {"_id": 0})
+
+    def create_schecule(self, ):
 
 class ProjectManageBIL(BaseBIL):
 

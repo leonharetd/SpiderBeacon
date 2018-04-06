@@ -1,10 +1,10 @@
 //根据project，获取spider内容
 function get_Spider_By_Pro(){
-    var pro_value = $('#projectValue option:selected').val();
-    if(pro_value){
+    var project_id = $('#projectValue option:selected').attr("project_id");
+    if(project_id){
         $.ajax({
-            url: "",
-            data: pro_value,
+            url: "/spider_deploy",
+            data: {"action": "get_spiders", "project_id": project_id},
             type: 'POST',
             dataType: 'json',
             async: true,
@@ -12,12 +12,13 @@ function get_Spider_By_Pro(){
                 if(data.status == 'ok'){
                     var html = '';
                     var spiList = data.message;
+
                     if (spiList.length > 0){
                         for (var i = 0; i < spiList.length; i++) {
-                            html += '<option value="' + spiList[i] + '>' + spiList[i] + '</option>';
+                            html += '<option value="' + spiList[i] + '">' + spiList[i] + '</option>';
                         }
-                        $('#spiderValue').html(html);
                     }
+                    $('#spiderValue').html(html);
                 }
             }
         });
@@ -26,21 +27,33 @@ function get_Spider_By_Pro(){
 
 //获取project_info的值
 function get_ProInfo_value(){
-    var projectValue = $('#projectValue option:selected').val();
-    var spiderValue = $('#spiderValue option:selected').val();
-    var datavalue = [];
-    datavalue['project'] = projectValue;
-    datavalue['spider'] = spiderValue;
+    var project_id = $('#projectValue option:selected').attr("project_id");
     if(projectValue && spiderValue){
             $.ajax({
-                url: "",
-                data: datavalue,
+                url: "/spider_deploy",
+                data: {"action": "get_project_info", "project_id": project_id},
                 type: 'POST',
                 dataType: 'json',
                 async: true,
                 success: function(data){
+
                     if(data.status == 'ok'){
-                        $("#pro_info").val(data.message);
+                        var html = '';
+//                        alert(data.message);
+                        var msgList = data.message;
+//                        alert(msgList.username);
+                        html += '<label>Project Info</label><div class="box-body"><table id="example1" class="table table-bordered table-striped">'+
+                                 '<thead><tr><th>project</th><th>group</th><th>username</th><th>creator</th><th>version</th>'+
+                                 '<th>create_time</th></tr></thead>'+
+                                 '<tbody><tr>'+
+                                 '<td>'+ msgList.project +'</td>'+
+                                 '<td>'+ msgList.group +'</td>'+
+                                 '<td>'+ msgList.username +'</td>'+
+                                 '<td>'+ msgList.creator +'</td>'+
+                                 '<td>'+ msgList.version +'</td>'+
+                                 '<td>'+ msgList.create_time +'</td>'+
+                                 '</tr></tbody></table></div>';
+                        $("#project_Info").html(html);
                     }
                 }
             });
@@ -107,8 +120,9 @@ $(".btn-info").click(function(){
     var datas = [];
     datas['project'] = projectValue;
     datas['spider'] = spiderValue;
-    datas['dingValue'] = dingValue;
+    datas['perid'] = dingValue;
     datas['servers'] = server_value;
+    datas['action'] = "deploy"
 
     $(".deploy_progress").show();
 

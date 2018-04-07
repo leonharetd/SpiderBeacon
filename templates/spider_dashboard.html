@@ -24,29 +24,34 @@
                         <thead>
                         <tr>
                             <th>Job id</th>
+                            <th>project</th>
                             <th>Spider Name</th>
                             <th>Group</th>
                             <th>User</th>
                             <th>Start time</th>
                             <th>Runtime</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        {% for cjob in completed_jobs %}
+                        {% for cjob in pending_jobs %}
                         <tr>
                             <!--<td><input type="checkbox" class="flat-red" checked></td>-->
-                            <td>{{ cjob["_id"] }}</td>
-                            <td>{{ cjob["spider_name"] }}</td>
-                            <td>{{ cjob["group"] }}</td>
-                            <td>{{ cjob["user_name"] }}</td>
-                            <td>{{ cjob["start_time"] }}</td>
-                            <td>{{ cjob["runtime"] }}</td>
-                            <td>{{ cjob["status"] }}</td>
+                            <td>{{ cjob[1]["_id"] }}</td>
+                            <td>{{ cjob[1]["project"] }}</td>
+                            <td>{{ cjob[1]["spider_name"] }}</td>
+                            <td>{{ cjob[1]["group"] }}</td>
+                            <td>{{ cjob[1]["username"] }}</td>
+                            <td>{{ cjob[1]["create_time"] }}</td>
+                            <td> --:--:-- </td>
+                            <td>{{ cjob[1]["status"] }}</td>
                             <td>
-                                <span class="label label-success">FINISHED</span>
-                                <span class="label label-danger">CANCELED</span>
+                                {% if cjob[0] %}
+                                    <botton type="button" class="btn btn-block btn-xs btn-success" id="run_btn"
+                                        value={{ cjob[1]["_id"] }}>GO RUN</botton>
+                                {% end if %}
                             </td>
 
                         </tr>
@@ -78,26 +83,29 @@
                 <thead>
                 <tr>
                   <th>Job id</th>
+                  <th>project</th>
                   <th>Spider Name</th>
                   <th>Group</th>
                   <th>User</th>
                   <th>Start time</th>
                   <th>Runtime</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for rjob in running_jobs %}
                   <tr>
-                      <td>{{ rjob["_id"] }}</td>
-                      <td>{{ rjob["spider_name"] }}</td>
-                      <td>{{ rjob["group"] }}</td>
-                      <td>{{ rjob["user_name"] }}</td>
-                      <td>{{ rjob["start_time"] }}</td>
-                      <td>{{ rjob["runtime"] }}</td>
-                      <td>{{ rjob["status"] }}</td>
+                      <td>{{ rjob[1]["_id"] }}</td>
+                      <td>{{ rjob[1]["project"] }}</td>
+                      <td>{{ rjob[1]["spider_name"] }}</td>
+                      <td>{{ rjob[1]["group"] }}</td>
+                      <td>{{ rjob[1]["username"] }}</td>
+                      <td>{{ rjob[1]["create_time"] }}</td>
+                      <td> --:--:-- </td>
+                      <td>{{ rjob[1]["status"] }}</td>
                       <td>
-                          <a class="btn btn-info btn-xs">MORE</a>
+                          <a class="btn btn-info btn-xs" href="">MORE</a>
                           <a class="btn btn-warning btn-xs">CANCLE</a>
                       </td>
                   </tr>
@@ -129,6 +137,7 @@
                 <thead>
                 <tr>
                   <th>Job id</th>
+                  <th>project</th>
                   <th>Spider Name</th>
                   <th>Group</th>
                   <th>User</th>
@@ -142,13 +151,14 @@
                 {% for cjob in completed_jobs %}
                   <tr>
                       <!--<td><input type="checkbox" class="flat-red" checked></td>-->
-                      <td>{{ cjob["_id"] }}</td>
-                      <td>{{ cjob["spider_name"] }}</td>
-                      <td>{{ cjob["group"] }}</td>
-                      <td>{{ cjob["user_name"] }}</td>
-                      <td>{{ cjob["start_time"] }}</td>
-                      <td>{{ cjob["runtime"] }}</td>
-                      <td>{{ cjob["status"] }}</td>
+                      <td>{{ cjob[1]["_id"] }}</td>
+                      <td>{{ cjob[1]["project"] }}</td>
+                      <td>{{ cjob[1]["spider_name"] }}</td>
+                      <td>{{ cjob[1]["group"] }}</td>
+                      <td>{{ cjob[1]["username"] }}</td>
+                      <td>{{ cjob[1]["create_time"] }}</td>
+                      <td> --:--:-- </td>
+                      <td>{{ cjob[1]["status"] }}</td>
                       <td>
                           <span class="label label-success">FINISHED</span>
                           <span class="label label-danger">CANCELED</span>
@@ -174,6 +184,21 @@
       </div>
 </section>
 
+<script src="{{ static_url('scripts/jquery.min.js')}}"></script>
+<script>
+    $("#run_btn").click(function(){
+        $.ajax({
+            url: "/spider_dashboard",
+            data: {"action": "run_spiders", "project_id": $(this).attr("value")},
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            success: function(data){
+
+            }
+         })
+    })
+</script>
 {% end block %}
 
 

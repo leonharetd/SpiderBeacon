@@ -28,10 +28,12 @@ class ScrapydBIL(BaseBIL):
         spiders_name = self.scrapyd.list_spiders(project)
         return spiders_name
 
+    @gen.coroutine
     def run_spider(self, ip, project, spider_name):
         sd = ScrapydAPI(ip)
         return sd.schedule(project, spider_name)
 
+    @gen.coroutine
     def stop_spider(self, ip, project, id):
         sd = ScrapydAPI(ip)
         return sd.cancel(project, id)

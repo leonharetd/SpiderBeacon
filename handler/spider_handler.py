@@ -14,10 +14,30 @@ class SpiderDashBoardHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         spider_dashboard = SpiderDashBoardBIL()
-        pending_jobs = spider_dashboard.get_pending_jobs()
-        running_jobs =  spider_dashboard.get_running_jobs()
-        completed_jobs = spider_dashboard.get_completed_jobs()
-        self.render('spider_dashboard.html', pending_jobs = [], running_jobs=running_jobs, completed_jobs=completed_jobs)
+        group = self.get_secure_cookie("g")
+        user_name = self.get_secure_cookie("u")
+        pending_jobs = spider_dashboard.get_pending_jobs(group=group, user_name=user_name)
+        running_jobs = spider_dashboard.get_running_jobs(group=group, user_name=user_name)
+        completed_jobs = spider_dashboard.get_completed_jobs(group=group, user_name=user_name)
+        print running_jobs
+        self.render('spider_dashboard.html', pending_jobs = pending_jobs, running_jobs=running_jobs, completed_jobs=completed_jobs)
+
+    @gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        spider_dashboard = SpiderDashBoardBIL()
+        action = self.get_argument("action")
+        if action == "run_spiders":
+            _id = self.get_argument("project_id")
+            print _id
+            schedule = spider_dashboard.find_one_project(_id)
+            for ip in schedule["servers"]:
+                run_id = yield spider_dashboard.run_spider(ip, schedule["project"], schedule["spider_name"])
+                spider_dashboard.insert_running_id(schedule["_id"], run_id)
+            spider_dashboard.update_schedule_status(_id)
+            self.write({"status": "ok"})
+        elif action == "cancel_spiders":
+            pass
 
 
 class SpiderUploadHandler(BaseHandler):
@@ -28,6 +48,7 @@ class SpiderUploadHandler(BaseHandler):
         deploy_info = spider_depoly.get_deploy_project_info()
         self.render('spider_upload.html', deploy_info=deploy_info)
 
+    @gen.coroutine
     @tornado.web.authenticated
     def post(self):
         spider_upload = SpiderUploadBIL()
@@ -60,7 +81,6 @@ class SpiderDeployHandler(BaseHandler):
         nodes = spider_deploy.get_nodes()
         self.render('spider_deploy.html', groups=groups, spiders=[], nodes=list(nodes))
 
-    @gen.coroutine
     @tornado.web.authenticated
     def post(self):
         spider_deploy = SpiderDeployBIL()
@@ -73,23 +93,6 @@ class SpiderDeployHandler(BaseHandler):
             project_id = self.get_argument("project_id")
             spider_info = spider_deploy.get_project_info(project_id)
             self.write({"status": "ok", "message": spider_info})
-        elif action == "deploy":
-            project = self.get_argument("project")
-            spider = self.get_argument("spider")
-            group = self.get_secure_cookie("g")
-            user = self.get_secure_cookie("u")
-            peird = self.get_argument("peird")
-            servers = self.get_arguments("servers[]")
-            for ip in servers:
-                try:
-                    response = yield spider_deploy.deploy_spider("http://{ip}:6800".format(ip=ip), project)
-                    spider_deploy.create_schedule(project, spider, group, user, peird)
-                    self.w
-                except Exception as e:
-                    import traceback
-                    print traceback.print_exc()
-                    self.write({"message": "error"})
-            self.finish()
 
 
 class SpiderFlushHandler(WebSocketHandler):
@@ -102,12 +105,13 @@ class SpiderFlushHandler(WebSocketHandler):
     def on_message(self, message):
         info = json.loads(message)
         if info.get("action", "") == "deploy":
+            servers = []
             for ip in info["servers"]:
                 try:
-                    print ip
+                    servers.append(ip.strip())
                     self.spider_deploy.deploy_spider("http://{ip}:6800".format(ip=ip.strip()), info["project"])
                     self.spider_deploy.create_schedule(info["project"], info["spider"], self.group,
-                                                       self.user_name, info["peird"])
+                                                       self.user_name, info["peird"], servers)
                     self.write_message(json.dumps({"ip": ip, "status": True}))
                 except Exception as e:
                     import traceback

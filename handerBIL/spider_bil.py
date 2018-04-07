@@ -8,6 +8,7 @@ from base_bil import BaseBIL, filter_with_username, get_auth
 from scrapy_bil import ScrapydBIL
 from DBaction.settings import MONGODB_PORT, MONGODB_HOST, SCRAPYD_API
 from DBaction.mongo_action import MongoAction
+from DBaction.redis_action import RedisAction
 
 
 class SpiderUploadBIL(BaseBIL):
@@ -59,37 +60,55 @@ class SpiderDeployBIL(BaseBIL):
         file_info = self.mongo_action.find_one("project_info", {"project": project})
         return self.scrapyd.deploy_spider(ip, project, file_info["version"], file_info["project_path"])
 
-    def create_schedule(self, project, spider, group, user, perid):
+    def create_schedule(self, project, spider, group, user, perid, servers):
         schedule_info = {
             "project": project,
             "spider_name": spider,
             "group": group,
-            "user": user,
+            "username": user,
             "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "status": "pending"
+            "status": "pending",
+            "job_type": "normal",
+            "servers": servers
         }
         if perid:
             schedule_info["perid"] = perid
             schedule_info["job_type"] = "perid"
             schedule_info["next_time"] = "XXX"
-        return self.mongo_action.update_one("schedule", {"project": project, "spider_name": spider}, schedule_info)
+        return self.mongo_action.update_one("schedule", {"project": project, "spider_name": spider}, schedule_info, upsert=True)
+
 
 class SpiderDashBoardBIL(BaseBIL):
 
     def __init__(self):
         super(SpiderDashBoardBIL, self).__init__()
         self.mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
+        self.redis_action = RedisAction()
+        self.scrapyd = ScrapydBIL(SCRAPYD_API)
 
     @get_auth
-    def get_running_jobs(self):
+    def get_running_jobs(self, **kwargs):
         return self.mongo_action.find("schedule", {"status": "running", "job_type": "normal"})
 
     @get_auth
-    def get_pending_jobs(self):
+    def get_pending_jobs(self, **kwargs):
         return self.mongo_action.find("schedule", {"status": "pending", "job_type": "normal"})
 
-    def get_completed_jobs(self):
+    def get_completed_jobs(self, **kwargs):
         return self.mongo_action.find("schedule", {"job_type": "normal", "status": {"$in": ["finished", "canceled"]}})
+
+    @gen.coroutine
+    def run_spider(self, ip, project, spider_name):
+        return self.scrapyd.run_spider(ip, project, spider_name)
+
+    def find_one_project(self, _id):
+        return self.mongo_action.find_one("schedule", {"_id": ObjectId(_id)})
+
+    def insert_running_id(self, pid, running_id):
+        self.redis_action.rpush(pid, running_id)
+
+    def update_schedule_status(self, _id):
+        self.mongo_action.update_one("schedule", {"_id": ObjectId(_id)}, {"$set": {"status": "running"}})
 
 
 class ProjectManageBIL(BaseBIL):

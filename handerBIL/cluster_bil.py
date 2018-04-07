@@ -16,7 +16,7 @@ class ClusterManageBIL(BaseBIL):
         :return: 所有服务器信息
         """
         mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
-        project_list = mongo_action.find("machines", {})
+        project_list = mongo_action.find("nodes_info", {})
         return project_list
 
 

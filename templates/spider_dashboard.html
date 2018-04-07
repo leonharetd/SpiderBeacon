@@ -10,7 +10,60 @@
 <section class="content">
       <div class="row">
         <div class="col-xs-12">
+          <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">pending Jobs</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Job id</th>
+                            <th>Spider Name</th>
+                            <th>Group</th>
+                            <th>User</th>
+                            <th>Start time</th>
+                            <th>Runtime</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
+                        {% for cjob in completed_jobs %}
+                        <tr>
+                            <!--<td><input type="checkbox" class="flat-red" checked></td>-->
+                            <td>{{ cjob["_id"] }}</td>
+                            <td>{{ cjob["spider_name"] }}</td>
+                            <td>{{ cjob["group"] }}</td>
+                            <td>{{ cjob["user_name"] }}</td>
+                            <td>{{ cjob["start_time"] }}</td>
+                            <td>{{ cjob["runtime"] }}</td>
+                            <td>{{ cjob["status"] }}</td>
+                            <td>
+                                <span class="label label-success">FINISHED</span>
+                                <span class="label label-danger">CANCELED</span>
+                            </td>
+
+                        </tr>
+                        {% end for %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
           <div class="box">
               <div class="box-header">
                   <h3 class="box-title">Running Jobs</h3>
@@ -28,20 +81,21 @@
                   <th>Spider Name</th>
                   <th>Group</th>
                   <th>User</th>
-                  <th>Runtime</th>
                   <th>Start time</th>
+                  <th>Runtime</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for machine in cluster %}
+                {% for rjob in running_jobs %}
                   <tr>
-                      <td>{{ machine["name"] }}</td>
-                      <td>{{ machine["ip"] }}</td>
-                      <td>{{ machine["cpu_avg"] }}</td>
-                      <td>{{ machine["mem_avg"] }}</td>
-                      <td>{{ machine["spider_num"] }}</td>
-                      <td>{{ machine["status"] }}</td>
+                      <td>{{ rjob["_id"] }}</td>
+                      <td>{{ rjob["spider_name"] }}</td>
+                      <td>{{ rjob["group"] }}</td>
+                      <td>{{ rjob["user_name"] }}</td>
+                      <td>{{ rjob["start_time"] }}</td>
+                      <td>{{ rjob["runtime"] }}</td>
+                      <td>{{ rjob["status"] }}</td>
                       <td>
                           <a class="btn btn-info btn-xs">MORE</a>
                           <a class="btn btn-warning btn-xs">CANCLE</a>
@@ -78,22 +132,23 @@
                   <th>Spider Name</th>
                   <th>Group</th>
                   <th>User</th>
-                  <th>Runtime</th>
                   <th>Start time</th>
+                  <th>Runtime</th>
                   <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                {% for machine in cluster %}
+                {% for cjob in completed_jobs %}
                   <tr>
                       <!--<td><input type="checkbox" class="flat-red" checked></td>-->
-                      <td>{{ machine["name"] }}</td>
-                      <td>{{ machine["ip"] }}</td>
-                      <td>{{ machine["cpu_avg"] }}</td>
-                      <td>{{ machine["mem_avg"] }}</td>
-                      <td>{{ machine["spider_num"] }}</td>
-                      <td>{{ machine["status"] }}</td>
+                      <td>{{ cjob["_id"] }}</td>
+                      <td>{{ cjob["spider_name"] }}</td>
+                      <td>{{ cjob["group"] }}</td>
+                      <td>{{ cjob["user_name"] }}</td>
+                      <td>{{ cjob["start_time"] }}</td>
+                      <td>{{ cjob["runtime"] }}</td>
+                      <td>{{ cjob["status"] }}</td>
                       <td>
                           <span class="label label-success">FINISHED</span>
                           <span class="label label-danger">CANCELED</span>

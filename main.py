@@ -9,7 +9,7 @@ from handler.index_handler import IndexHandler, Index2Handler
 from handler.login_handler import LoginHandler, LogoutHandler
 from handler.cluster_handler import ClusterDashBoardHandler
 from handler.manger_handler import MembersManageHandler, ProjectManageHandler
-from handler.spider_handler import SpiderUploadHandler, SpiderDeployHandler
+from handler.spider_handler import SpiderUploadHandler, SpiderDeployHandler, SpiderFlushHandler
 from handler.spider_handler import SpiderDashBoardHandler, SpiderDashBoardDetailHandler
 from handler.scrapy_handler import ScrapyHandler
 from handler.jobs_handler import JobsDashBoardHandler
@@ -28,6 +28,7 @@ routes = [
     (r"/spider_upload", SpiderUploadHandler),
     (r"/spider_deploy", SpiderDeployHandler),
     (r"/jobs_dashboard", JobsDashBoardHandler),
+    (r'/spider_flush', SpiderFlushHandler),
 
     (r"/members_manage", MembersManageHandler),
     (r"/project_manage", ProjectManageHandler),

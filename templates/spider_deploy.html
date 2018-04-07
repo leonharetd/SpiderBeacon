@@ -66,13 +66,12 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Select Multiple(可多选)</label>
-                    <select multiple="" id="serversValue" class="form-control" style="height: 190px;">
-                    <option>option 1</option>
-                    <option>option 2</option>
-                    <option>option 3</option>
-                    <option>option 4</option>
-                    <option>option 5</option>
-                  </select>
+                    <select multiple="" id="serversValue" class="form-control"
+                            style="width: 100%;" tabindex="-1" aria-hidden="true">
+                        {% for node in nodes %}
+                            <option > {{ node["ip"] }}</option>
+                        {% end for %}
+                    </select>
                     <!--<span id="helpblock" class="help-block" hidden>Help block with error</span>-->
                 </div>
             </div>
@@ -87,14 +86,14 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered ">
                         <tr>
                             <th style="width: 10px">#</th>
                             <th style="width: 130px;">服务器地址</th>
                             <th style="width: 250px;">部署进度</th>
                             <th style="width: 120px">部署结果</th>
                         </tr>
-                        <tr>
+                        <tr id="servers_proess">
                             <td>1.</td>
                             <td>Update software</td>
                             <td>

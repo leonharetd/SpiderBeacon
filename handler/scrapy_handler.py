@@ -11,13 +11,12 @@ class ScrapyHandler(BaseHandler):
     def post(self):
         scrapy_bil = ScrapyBIL()
         action = self.get_argument("action")
-        self.write({"message": "ok"})
         if action == "watcher":
 
             spider_info = {
                 "ip": self.request.remote_ip,
                 "start_time": self.get_argument("start_time"),
-                "project_name": self.get_argument("project_name"),
+                "project": self.get_argument("project_name"),
                 "spider_name": self.get_argument("spider_name"),
                 "page_num": self.get_argument("page_num"),
                 "item_num": self.get_argument("item_num"),
@@ -26,10 +25,14 @@ class ScrapyHandler(BaseHandler):
                 "status": self.get_argument("status"),
                 "job_id": self.get_argument("job_id")
             }
-            scrapy_bil.update_info({"job_id": spider_info["job_id"],
-                                    "project_name": spider_info["project_name"],
-                                    "spider_name": spider_info["spider_name"]}, spider_info, s_upsert=True)
+            if spider_info["status"] == "start":
+                self.write({"job_id": scrapy_bil.get_job_id(project=spider_info["project"], spider_name=spider_info["spider_name"])})
+            else:
+                self.write({"message": "ok"})
+                scrapy_bil.update_info("running_job", {"job_id": spider_info["job_id"],
+                                       "project_name": spider_info["project_name"],
+                                       "spider_name": spider_info["spider_name"]}, spider_info, s_upsert=True)
 
-            if spider_info["status"] == "finished":
-                scrapy_bil.insert_info("job_history", spider_info)
+                if spider_info["status"] == "finished":
+                    scrapy_bil.insert_info("finished_job", spider_info)
 

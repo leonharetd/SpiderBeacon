@@ -85,7 +85,7 @@ $("#label2").click(function(){
 $(".btn-info").click(function(){
     var projectValue = $('#projectValue option:selected').val();
     var spiderValue = $('#spiderValue option:selected').val();
-    var dingValue = null;
+    var dingValue = "";
 
     if(!projectValue){
 //        form_error();
@@ -117,29 +117,35 @@ $(".btn-info").click(function(){
         alert("请选择要部署的服务器");
     }
 
-    var datas = [];
+    var datas = {};
     datas['project'] = projectValue;
     datas['spider'] = spiderValue;
-    datas['perid'] = dingValue;
+    datas['peird'] = dingValue;
     datas['servers'] = server_value;
     datas['action'] = "deploy"
-
     $(".deploy_progress").show();
 
-    $.ajax({
-        url : '',
-        data : datas,
-        type : 'POST',
-        dataType : 'json',
-        async: true,
-        success : function(data) {
-            if(data.status == 'ok'){
+    var ws = new WebSocket("ws://localhost:8000/spider_flush");
+    ws.onopen = function() {
+        ws.send(JSON.stringify(datas));
+    };
+    ws.binaryType = "arraybuffer";
+    var i = 1;
+    var html = '';
+    ws.onmessage = function(e) {
+        console.log(e.data);
+        var datas = JSON.parse(e.data);
 
-            }
-
-        }
-    });
-})
+        html += '<tr><td>'+i+'</td>'+'<td>'+datas.ip +'</td>'+
+            '{% if '+datas.status +' == true  %}'+
+            '<td><div class="progress"><div class="progress-bar" style="width:100%;background-color: #00c0ef;">100%</div></div></td><td><span class="label label-success">success</span></td>'+
+            '{% else %}'+
+            '<td><div class="progress"><div class="progress-bar" style="width:0%;background-color: #dd4b39;">0%</div></div></td><td><span class="label label-danger">False</span></td>{% end %}</tr>';
+        alert(html);
+        $("#servers_proess").html(html);
+        i++;
+    };
+});
 
 
 //function select1_error(){

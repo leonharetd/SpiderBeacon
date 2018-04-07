@@ -124,6 +124,7 @@ $(".btn-info").click(function(){
     datas['servers'] = server_value;
     datas['action'] = "deploy"
     $(".deploy_progress").show();
+    var serverLength = server_value.length; //服务器数量
 
     var ws = new WebSocket("ws://localhost:8000/spider_flush");
     ws.onopen = function() {
@@ -131,18 +132,25 @@ $(".btn-info").click(function(){
     };
     ws.binaryType = "arraybuffer";
     var i = 1;
+    var j = 1; //失败的次数
     var html = '';
     ws.onmessage = function(e) {
+        //progress-bar
+        $("#servers_progress").width(i/serverLength*100+'%');
+        $("#p_progress").text(i+'/'+serverLength);
+        $("#servers_progress").attr('aria-valuenow',i);
+        $("#servers_progress").attr('aria-valuemax',serverLength);
+
         console.log(e.data);
         var datas = JSON.parse(e.data);
 
-        html += '<tr><td>'+i+'</td>'+'<td>'+datas.ip +'</td>'+
-            '{% if '+datas.status +' == true  %}'+
-            '<td><div class="progress"><div class="progress-bar" style="width:100%;background-color: #00c0ef;">100%</div></div></td><td><span class="label label-success">success</span></td>'+
-            '{% else %}'+
-            '<td><div class="progress"><div class="progress-bar" style="width:0%;background-color: #dd4b39;">0%</div></div></td><td><span class="label label-danger">False</span></td>{% end %}</tr>';
-        alert(html);
-        $("#servers_proess").html(html);
+        if(datas.status == false){
+            alert(html);
+
+            html += '<tr><td>'+j+'</td><td>'+datas.ip +'</td><td><span class="label label-danger">False</span></td></tr>';
+            $("#servers_false").html(html);
+            j++;
+        }
         i++;
     };
 });

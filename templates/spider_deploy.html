@@ -80,29 +80,41 @@
                 <button type="button" class="btn btn-block btn-info">DEPLOY</button>
             </div>
 
+
             <div class="col-md-12 deploy_progress" hidden>
                 <div class="box-header">
                     <h3 class="box-title">项目部署服务器进度</h3>
                 </div>
+
+                <div class="progress progress-striped active">
+                    <div id="servers_progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                       <p id="p_progress"></p>
+                    </div>
+                </div>
+
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table table-bordered ">
+                    <table class="table table-bordered" >
+                        <thead>
                         <tr>
                             <th style="width: 10px">#</th>
                             <th style="width: 130px;">服务器地址</th>
-                            <th style="width: 250px;">部署进度</th>
+                            <!--<th style="width: 250px;">部署进度</th>-->
                             <th style="width: 120px">部署结果</th>
                         </tr>
-                        <tr id="servers_proess">
+                        </thead>
+                        <tbody id="servers_false">
+                        <tr>
                             <td>1.</td>
                             <td>Update software</td>
-                            <td>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 55%;background-color: #00c0ef;">80%</div>
-                                </div>
-                            </td>
-                            <td><span class="label label-success">Approved</span></td>
+                            <!--<td>-->
+                                <!--<div class="progress">-->
+                                    <!--<div class="progress-bar" style="width: 55%;background-color: #00c0ef;">80%</div>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                            <td><span class="label label-success">False</span></td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
                 <!-- /.box-body -->

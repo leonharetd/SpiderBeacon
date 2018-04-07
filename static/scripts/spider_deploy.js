@@ -145,7 +145,8 @@ $(".btn-info").click(function(){
         var datas = JSON.parse(e.data);
 
         if(datas.status == false){
-            alert(html);
+            $("#error_table").show();
+//            alert(html);
 
             html += '<tr><td>'+j+'</td><td>'+datas.ip +'</td><td><span class="label label-danger">False</span></td></tr>';
             $("#servers_false").html(html);

@@ -44,7 +44,7 @@
                             <td>{{ cjob[1]["spider_name"] }}</td>
                             <td>{{ cjob[1]["group"] }}</td>
                             <td>{{ cjob[1]["username"] }}</td>
-                            <td>{{ cjob[1]["create_time"] }}</td>
+                            <td> --:--:-- </td>
                             <td> --:--:-- </td>
                             <td>{{ cjob[1]["status"] }}</td>
                             <td>
@@ -102,11 +102,17 @@
                       <td>{{ rjob[1]["group"] }}</td>
                       <td>{{ rjob[1]["username"] }}</td>
                       <td>{{ rjob[1]["create_time"] }}</td>
-                      <td> --:--:-- </td>
+                      <td>{{ rjob[1]["run_time"] }} </td>
                       <td>{{ rjob[1]["status"] }}</td>
                       <td>
-                          <a class="btn btn-info btn-xs" href="">MORE</a>
-                          <a class="btn btn-warning btn-xs">CANCLE</a>
+                        {% if rjob[0] %}
+                        <div class="text-center">
+                            <botton type="button" class="btn btn-xs btn-info more" style="width:45%;"
+                                value={{ rjob[1]["_id"] }}>MORE</botton>
+                            <botton type="button" class="btn btn-xs btn-warning cancel" style="width:45%;"
+                                value={{ rjob[1]["_id"] }}>CANCEL</botton>
+                        </div>
+                        {% end if %}
                       </td>
                   </tr>
                 {% end for %}
@@ -151,19 +157,22 @@
                 {% for cjob in completed_jobs %}
                   <tr>
                       <!--<td><input type="checkbox" class="flat-red" checked></td>-->
-                      <td>{{ cjob[1]["_id"] }}</td>
-                      <td>{{ cjob[1]["project"] }}</td>
-                      <td>{{ cjob[1]["spider_name"] }}</td>
-                      <td>{{ cjob[1]["group"] }}</td>
-                      <td>{{ cjob[1]["username"] }}</td>
-                      <td>{{ cjob[1]["create_time"] }}</td>
+                      <td>{{ cjob["_id"] }}</td>
+                      <td>{{ cjob["project"] }}</td>
+                      <td>{{ cjob["spider_name"] }}</td>
+                      <td>{{ cjob["group"] }}</td>
+                      <td>{{ cjob["username"] }}</td>
+                      <td>{{ cjob["create_time"] }}</td>
                       <td> --:--:-- </td>
-                      <td>{{ cjob[1]["status"] }}</td>
-                      <td>
-                          <span class="label label-success">FINISHED</span>
-                          <span class="label label-danger">CANCELED</span>
-                      </td>
-
+                      {%  if  cjob["status"] == "canceled" %}
+                          <td>
+                              <span class="label label-danger">CANCELED</span>
+                          </td>
+                      {% elif cjob["status"] == "finished" %}
+                          <td>
+                            <span class="label label-success">FINISHED</span>
+                          </td>
+                      {% end if %}
                   </tr>
                 {% end for %}
                 </tbody>
@@ -190,6 +199,24 @@
         $.ajax({
             url: "/spider_dashboard",
             data: {"action": "run_spiders", "project_id": $(this).attr("value")},
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            success: function(data){
+
+            }
+         })
+    });
+
+    $(".more").click(function(){
+        var job_id = $(this).attr("value");
+        window.location.href = "spider_dashboard_detail?job_id=" + job_id;
+         });
+
+    $(".cancel").click(function(){
+        $.ajax({
+            url: "/spider_dashboard",
+            data: {"action": "cancel_spiders", "project_id": $(this).attr("value")},
             type: 'POST',
             dataType: 'json',
             async: true,

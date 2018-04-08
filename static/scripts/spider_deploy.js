@@ -120,7 +120,7 @@ $(".btn-info").click(function(){
     var datas = {};
     datas['project'] = projectValue;
     datas['spider'] = spiderValue;
-    datas['peird'] = dingValue;
+    datas['period'] = dingValue;
     datas['servers'] = server_value;
     datas['action'] = "deploy"
     $(".deploy_progress").show();

@@ -20,6 +20,9 @@ class RedisAction(object):
     def rpush(self, name, value):
         return self.redis.rpush(name, value)
 
+    def get_list(self, name):
+        return self.redis.lrange(name, 0, -1)
+
     def queue_delete(self, name):
         return self.redis.delete(name)
 
@@ -27,6 +30,8 @@ class RedisAction(object):
 if __name__ == "__main__":
     # temp = RedisAction()
     temp = RedisAction()
-    print temp.create_job_id()
+    print temp.rpush("test1", json.dumps((1, 2)))
+    for i in temp.get_list("test1"):
+        print json.loads(i)[1]
     # print temp.priority_queue_pop("page_list_task", 1)
     pass

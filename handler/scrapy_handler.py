@@ -30,8 +30,8 @@ class ScrapyHandler(BaseHandler):
             else:
                 self.write({"message": "ok"})
                 scrapy_bil.update_info("running_job", {"job_id": spider_info["job_id"],
-                                       "project_name": spider_info["project_name"],
-                                       "spider_name": spider_info["spider_name"]}, spider_info, s_upsert=True)
+                                       "project": spider_info["project"],
+                                       "spider_name": spider_info["spider_name"]}, spider_info, upsert=True)
 
                 if spider_info["status"] == "finished":
                     scrapy_bil.insert_info("finished_job", spider_info)

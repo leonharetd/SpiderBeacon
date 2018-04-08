@@ -12,7 +12,6 @@ class LoginHandler(BaseHandler):
         session = uuid4()
         self.render("login.html", session=session)
 
-
     def post(self):
         login_bil = LoginBIL()
         user_name = self.get_argument("username", "")

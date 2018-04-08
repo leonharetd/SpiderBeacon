@@ -1,6 +1,7 @@
 #!/usr/bin/env Python
 # coding:utf-8
 import os
+import json
 from tornado import gen
 from datetime import datetime
 from bson.objectid import ObjectId
@@ -67,6 +68,7 @@ class SpiderDeployBIL(BaseBIL):
             "group": group,
             "username": user,
             "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "start_time": "",
             "status": "pending",
             "job_type": "normal",
             "servers": servers
@@ -101,14 +103,40 @@ class SpiderDashBoardBIL(BaseBIL):
     def run_spider(self, ip, project, spider_name):
         return self.scrapyd.run_spider(ip, project, spider_name)
 
+    @gen.coroutine
+    def stop_spider(self, ip, project, _id):
+        return self.scrapyd.stop_spider(ip, project, _id)
+
+    def insert_running_id(self, pid, ip, project, running_id):
+        info = {
+            "ip": ip,
+            "project": project,
+            "running_id": running_id
+        }
+        self.redis_action.rpush(pid, json.dumps(info))
+
+    def queue_delete(self, name):
+        return self.redis_action.queue_delete(name)
+
+    def update_schedule_status(self, _id, status):
+        self.mongo_action.update_one("schedule", {"_id": ObjectId(_id)}, {"$set": {"status": status}})
+
+    def update_schedule_start_time(self, _id, start_time):
+        self.mongo_action.update_one("schedule", {"_id": ObjectId(_id)}, {"$set": {"start_time": start_time}})
+
     def find_one_project(self, _id):
         return self.mongo_action.find_one("schedule", {"_id": ObjectId(_id)})
 
-    def insert_running_id(self, pid, running_id):
-        self.redis_action.rpush(pid, running_id)
+    def find_project_deploy_servers(self, _id):
+        return self.redis_action.get_list(_id)
 
-    def update_schedule_status(self, _id):
-        self.mongo_action.update_one("schedule", {"_id": ObjectId(_id)}, {"$set": {"status": "running"}})
+    def compute_runtime(self, jobs):
+        now = datetime.now()
+        for job in jobs:
+            delta = str(now - datetime.strptime(job[1]["start_time"], "%Y-%m-%d %H:%M:%S"))
+            delta[:delta.find(".")].replace(":", " : ")
+            job[1]["run_time"] = delta[:delta.find(".")].replace(":", " h  ", 1).replace(":", " m ", 1)
+        return jobs
 
 
 class ProjectManageBIL(BaseBIL):

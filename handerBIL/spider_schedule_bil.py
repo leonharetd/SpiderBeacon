@@ -2,7 +2,7 @@
 # coding:utf-8
 import os
 from base_bil import BaseBIL
-from scrapy_bil import ScrapyBIL
+from scrapy_bil import ScrapyBIL, ScrapydBIL
 from DBaction.settings import MONGODB_PORT, MONGODB_HOST, SCRAPYD_API
 from DBaction.mongo_action import MongoAction
 from DBaction.redis_action import RedisAction
@@ -13,7 +13,7 @@ class SipderScheduleBIL(BaseBIL):
     def __init__(self):
         super(SipderScheduleBIL, self).__init__()
         self.redis_action = RedisAction()
-        self.scrapyd = ScrapyBIL(ScrapyBIL)
+        self.scrapyd = ScrapydBIL(SCRAPYD_API)
 
     def run_job(self, job_id, ip, project, spider_name):
         sid = self.scrapyd.run_spider(ip, project, spider_name)
@@ -24,15 +24,5 @@ class SipderScheduleBIL(BaseBIL):
         return self.scrapyd.stop_spider(ip, project, job_id)
 
 
-
-
-
-
 if __name__ == "__main__":
-    temp = ScrapyBIL()
-    with open("../data/doubao.egg") as fp:
-        print temp.deploy_spider("douban", "111", fp)
-    print temp.scrapyd.list_projects()
-    print temp.scrapyd.list_spiders("douban")
-    print temp.scrapyd.list_jobs("douban")
-    print temp.scrapyd.schedule("douban", "book")
+    temp = SipderScheduleBIL()

@@ -18,9 +18,9 @@ class SpiderDashBoardHandler(BaseHandler):
         user_name = self.get_secure_cookie("u")
         pending_jobs = spider_dashboard.get_pending_jobs(group=group, user_name=user_name)
         running_jobs = spider_dashboard.get_running_jobs(group=group, user_name=user_name)
+        running_jobs = spider_dashboard.compute_runtime(running_jobs)
         completed_jobs = spider_dashboard.get_completed_jobs(group=group, user_name=user_name)
-        print running_jobs
-        self.render('spider_dashboard.html', pending_jobs = pending_jobs, running_jobs=running_jobs, completed_jobs=completed_jobs)
+        self.render('spider_dashboard.html', pending_jobs=pending_jobs, running_jobs=running_jobs, completed_jobs=completed_jobs)
 
     @gen.coroutine
     @tornado.web.authenticated
@@ -29,15 +29,24 @@ class SpiderDashBoardHandler(BaseHandler):
         action = self.get_argument("action")
         if action == "run_spiders":
             _id = self.get_argument("project_id")
-            print _id
             schedule = spider_dashboard.find_one_project(_id)
             for ip in schedule["servers"]:
-                run_id = yield spider_dashboard.run_spider(ip, schedule["project"], schedule["spider_name"])
-                spider_dashboard.insert_running_id(schedule["_id"], run_id)
-            spider_dashboard.update_schedule_status(_id)
+                id_response = yield spider_dashboard.run_spider(ip, schedule["project"], schedule["spider_name"])
+                spider_dashboard.insert_running_id(schedule["_id"], ip, schedule["project"], id_response.result())
+
+            spider_dashboard.update_schedule_start_time(_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            spider_dashboard.update_schedule_status(_id, "running")
             self.write({"status": "ok"})
         elif action == "cancel_spiders":
-            pass
+            _id = self.get_argument("project_id")
+            servers = spider_dashboard.find_project_deploy_servers(_id)
+            for s in servers:
+                info = json.loads(s)
+                flag = yield spider_dashboard.stop_spider(info["ip"], info["project"], info["running_id"])
+
+            spider_dashboard.update_schedule_status(_id, "canceled")
+            spider_dashboard.queue_delete(_id)
+            self.write({"status": "ok"})
 
 
 class SpiderUploadHandler(BaseHandler):
@@ -99,19 +108,19 @@ class SpiderFlushHandler(WebSocketHandler):
 
     def open(self):
         self.spider_deploy = SpiderDeployBIL()
-        self.user_name = self.get_secure_cookie("u")
-        self.group = self.get_secure_cookie("g")
 
     def on_message(self, message):
+        user_name = self.get_secure_cookie("u")
+        group = self.get_secure_cookie("g")
         info = json.loads(message)
         if info.get("action", "") == "deploy":
             servers = []
             for ip in info["servers"]:
                 try:
-                    servers.append(ip.strip())
+                    servers.append("http://{ip}:6800".format(ip=ip.strip()))
                     self.spider_deploy.deploy_spider("http://{ip}:6800".format(ip=ip.strip()), info["project"])
-                    self.spider_deploy.create_schedule(info["project"], info["spider"], self.group,
-                                                       self.user_name, info["peird"], servers)
+                    self.spider_deploy.create_schedule(info["project"], info["spider"], group,
+                                                       user_name, info["period"], servers)
                     self.write_message(json.dumps({"ip": ip, "status": True}))
                 except Exception as e:
                     import traceback

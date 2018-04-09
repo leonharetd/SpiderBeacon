@@ -26,6 +26,18 @@ class RedisAction(object):
     def queue_delete(self, name):
         return self.redis.delete(name)
 
+    def get_period_lock(self, name):
+        return self.redis.setnx(name, 1)
+
+    def del_period_lock(self, name):
+        return self.redis.delete(name)
+
+    def set(self, name, value):
+        if isinstance(value, str):
+            return self.redis.set(name, value)
+        elif isinstance(value, (list, dict)):
+            return self.redis.set(name, json.dumps(value))
+
 
 if __name__ == "__main__":
     # temp = RedisAction()

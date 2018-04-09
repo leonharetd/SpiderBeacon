@@ -81,6 +81,11 @@ $("#label2").click(function(){
      $("#dingshi").hide();
 })
 
+
+$("#label3").click(function(){
+     $("#dingshi").hide();
+})
+
 //点击部署按钮
 $(".btn-info").click(function(){
     var projectValue = $('#projectValue option:selected').val();

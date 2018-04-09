@@ -10,7 +10,6 @@ from scrapyd_api import ScrapydAPI
 
 
 class ScrapydBIL(BaseBIL):
-
     def __init__(self, ip):
         super(ScrapydBIL, self).__init__()
         self.mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
@@ -40,7 +39,6 @@ class ScrapydBIL(BaseBIL):
 
 
 class ScrapyBIL(BaseBIL):
-
     def __init__(self):
         super(ScrapyBIL, self).__init__()
         self.mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
@@ -49,7 +47,7 @@ class ScrapyBIL(BaseBIL):
     def insert_info(self, collection, info):
         self.mongo_action.insert(collection, info)
 
-    def get_job_id(self, project, spider_name):
+    def get_job_info(self, project, spider_name):
         return self.mongo_action.find_one("schedule", {"project": project, "spider_name": spider_name})
 
     def update_info(self, collection, query, info, **kwargs):
@@ -57,9 +55,8 @@ class ScrapyBIL(BaseBIL):
 
 
 if __name__ == "__main__":
-    temp = ScrapydBIL(SCRAPYD_API)
-    #print temp.deploy_spider("douban", "111", "../data/doubao.egg")
-    print temp.scrapyd.list_projects()
-    print temp.scrapyd.list_spiders("douban.egg")
-    #print temp.scrapyd.list_jobs("douban")
-    #print temp.scrapyd.schedule("douban", "book")
+    temp = ScrapyBIL()
+    from datetime import datetime
+    from bson.objectid import ObjectId
+    print  ObjectId.from_datetime(generation_time=datetime.now())
+

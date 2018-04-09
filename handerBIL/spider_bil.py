@@ -34,8 +34,6 @@ class SpiderUploadBIL(BaseBIL):
         return self.mongo_action.find("project_info", {}, limit=10).sort("create_time", -1)
 
 
-
-
 class SpiderDeployBIL(BaseBIL):
 
     def __init__(self):
@@ -96,8 +94,8 @@ class SpiderDashBoardBIL(BaseBIL):
     def get_pending_jobs(self, **kwargs):
         return self.mongo_action.find("schedule", {"status": "pending", "job_type": "normal"})
 
-    def get_completed_jobs(self, **kwargs):
-        return self.mongo_action.find("schedule", {"job_type": "normal", "status": {"$in": ["finished", "canceled"]}})
+    def get_completed_jobs(self):
+        return self.mongo_action.find("schedule_history", {"job_type": "normal"})
 
     @gen.coroutine
     def run_spider(self, ip, project, spider_name):
@@ -130,13 +128,37 @@ class SpiderDashBoardBIL(BaseBIL):
     def find_project_deploy_servers(self, _id):
         return self.redis_action.get_list(_id)
 
-    def compute_runtime(self, jobs):
+    def compute_runtime(self, job):
         now = datetime.now()
-        for job in jobs:
-            delta = str(now - datetime.strptime(job[1]["start_time"], "%Y-%m-%d %H:%M:%S"))
-            delta[:delta.find(".")].replace(":", " : ")
-            job[1]["run_time"] = delta[:delta.find(".")].replace(":", " h  ", 1).replace(":", " m ", 1)
-        return jobs
+        delta = str(now - datetime.strptime(job["start_time"], "%Y-%m-%d %H:%M:%S"))
+        delta[:delta.find(".")].replace(":", " : ")
+        job["run_time"] = delta[:delta.find(".")].replace(":", " h  ", 1).replace(":", " m ", 1)
+        return job
+
+    def get_jobs_without_auth(self, collection, query):
+        return self.mongo_action.find(collection, query)
+
+    def update_many_jobs_status(self, query, status):
+        self.mongo_action.update_many("schedule", query, {"$set": {"status": status}})
+
+    def add_job_chart(self, name, value):
+        self.redis_action.set(name, value)
+
+    def insert_schedule_history(self, info):
+        return self.mongo_action.insert("schedule_history", info)
+
+    def delete_schedule(self, _id):
+        self.mongo_action.delete_one("schedule", {"_id": ObjectId(_id)})
+
+
+class SpiderDashboardDetailBIL(BaseBIL):
+
+    def __init__(self):
+        super(SpiderDashboardDetailBIL, self).__init__()
+        self.mongo_action = MongoAction(MONGODB_HOST, MONGODB_PORT)
+
+    def get_project_job(self, project_id):
+        return self.mongo_action.find("job_running", {"job_id": ObjectId(project_id)})
 
 
 class ProjectManageBIL(BaseBIL):

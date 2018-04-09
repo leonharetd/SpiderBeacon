@@ -6,7 +6,7 @@ from tornado import gen
 from tornado.websocket import WebSocketHandler
 from datetime import datetime
 from base_handler import BaseHandler
-from handerBIL.spider_bil import SpiderUploadBIL, SpiderDeployBIL, SpiderDashBoardBIL
+from handerBIL.spider_bil import SpiderUploadBIL, SpiderDeployBIL, SpiderDashBoardBIL, SpiderDashboardDetailBIL
 
 
 class SpiderDashBoardHandler(BaseHandler):
@@ -18,8 +18,10 @@ class SpiderDashBoardHandler(BaseHandler):
         user_name = self.get_secure_cookie("u")
         pending_jobs = spider_dashboard.get_pending_jobs(group=group, user_name=user_name)
         running_jobs = spider_dashboard.get_running_jobs(group=group, user_name=user_name)
-        running_jobs = spider_dashboard.compute_runtime(running_jobs)
-        completed_jobs = spider_dashboard.get_completed_jobs(group=group, user_name=user_name)
+        new_running_jobs = []
+        for job in running_jobs:
+            new_running_jobs.append((job[0], spider_dashboard.compute_runtime(job[1])))
+        completed_jobs = spider_dashboard.get_completed_jobs()
         self.render('spider_dashboard.html', pending_jobs=pending_jobs, running_jobs=running_jobs, completed_jobs=completed_jobs)
 
     @gen.coroutine
@@ -46,6 +48,8 @@ class SpiderDashBoardHandler(BaseHandler):
 
             spider_dashboard.update_schedule_status(_id, "canceled")
             spider_dashboard.queue_delete(_id)
+            spider_dashboard.insert_schedule_history(spider_dashboard.find_one_project(_id))
+            spider_dashboard.delete_schedule(_id)
             self.write({"status": "ok"})
 
 
@@ -134,17 +138,7 @@ class SpiderDashBoardDetailHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        cluster = [
-            {"name": "mqqqq", "ip": "111.111.111.111", "cpu_avg": 50, "mem_avg": 66, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.112", "cpu_avg": 51, "mem_avg": 68, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.113", "cpu_avg": 52, "mem_avg": 69, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.114", "cpu_avg": 53, "mem_avg": 69, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.115", "cpu_avg": 54, "mem_avg": 69, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.116", "cpu_avg": 55, "mem_avg": 33, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.117", "cpu_avg": 54, "mem_avg": 22, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.118", "cpu_avg": 55, "mem_avg": 6, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.119", "cpu_avg": 53, "mem_avg": 61, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.120", "cpu_avg": 52, "mem_avg": 23, "spider_num": 10, "status": True},
-            {"name": "m1", "ip": "111.111.111.121", "cpu_avg": 51, "mem_avg": 54, "spider_num": 10, "status": True},
-        ]
-        self.render('spider_dashboard_detail.html', machines=cluster)
+        detail_bil = SpiderDashboardDetailBIL()
+        project_id = self.get_argument("job_id")
+        machines = detail_bil.get_project_job(project_id)
+        self.render('spider_dashboard_detail.html', machines=machines)

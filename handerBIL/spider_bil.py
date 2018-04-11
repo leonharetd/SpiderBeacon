@@ -59,7 +59,7 @@ class SpiderDeployBIL(BaseBIL):
         file_info = self.mongo_action.find_one("project_info", {"project": project})
         return self.scrapyd.deploy_spider(ip, project, file_info["version"], file_info["project_path"])
 
-    def create_schedule(self, project, spider, group, user, perid, servers):
+    def create_schedule(self, project, spider, group, user, period, job_type, servers):
         schedule_info = {
             "project": project,
             "spider_name": spider,
@@ -68,14 +68,18 @@ class SpiderDeployBIL(BaseBIL):
             "create_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "start_time": "",
             "status": "pending",
-            "job_type": "normal",
+            "job_type": job_type,
+            "period_value": "",
+            "period": period,
             "servers": servers
         }
-        if perid:
-            schedule_info["perid"] = perid
-            schedule_info["job_type"] = "perid"
+        if period in ["Period"]:
+            schedule_info["job_type"] = ""
             schedule_info["next_time"] = "XXX"
-        return self.mongo_action.update_one("schedule", {"project": project, "spider_name": spider}, schedule_info, upsert=True)
+        return self.mongo_action.update_one("schedule", {"project": project,
+                                                         "spider_name": spider,
+                                                         "create_time": schedule_info["create_time"]},
+                                            schedule_info, upsert=True)
 
 
 class SpiderDashBoardBIL(BaseBIL):
@@ -88,14 +92,17 @@ class SpiderDashBoardBIL(BaseBIL):
 
     @get_auth
     def get_running_jobs(self, **kwargs):
-        return self.mongo_action.find("schedule", {"status": "running", "job_type": "normal"})
+        return self.mongo_action.find("schedule", {"status": "running",
+                                                   "job_type": {"$in": kwargs["job_type"]}})
 
     @get_auth
     def get_pending_jobs(self, **kwargs):
-        return self.mongo_action.find("schedule", {"status": "pending", "job_type": "normal"})
+        return self.mongo_action.find("schedule", {"status": "pending",
+                                                   "job_type": {"$in": kwargs["job_type"]}})
 
-    def get_completed_jobs(self):
-        return self.mongo_action.find("schedule_history", {"job_type": "normal"})
+    def get_completed_jobs(self, **kwargs):
+        return self.mongo_action.find("schedule", {"status": {"$in": ["finished", "canceled"]},
+                                                   "job_type": {"$in": kwargs["job_type"]}})
 
     @gen.coroutine
     def run_spider(self, ip, project, spider_name):
@@ -122,6 +129,9 @@ class SpiderDashBoardBIL(BaseBIL):
     def update_schedule_start_time(self, _id, start_time):
         self.mongo_action.update_one("schedule", {"_id": ObjectId(_id)}, {"$set": {"start_time": start_time}})
 
+    def update_finished_schedule(self, _id, run_time, status):
+        self.mongo_action.update_one("schedule", {"_id": ObjectId(_id)}, {"$set": {"status": status, "run_time": run_time}})
+
     def find_one_project(self, _id):
         return self.mongo_action.find_one("schedule", {"_id": ObjectId(_id)})
 
@@ -143,9 +153,6 @@ class SpiderDashBoardBIL(BaseBIL):
 
     def add_job_chart(self, name, value):
         self.redis_action.set(name, value)
-
-    def insert_schedule_history(self, info):
-        return self.mongo_action.insert("schedule_history", info)
 
     def delete_schedule(self, _id):
         self.mongo_action.delete_one("schedule", {"_id": ObjectId(_id)})

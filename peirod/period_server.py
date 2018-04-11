@@ -35,9 +35,7 @@ def jobs_check_finish(fjob, jobs, bil, job_type):
         bil.update_many_jobs_status({"job_id": fjob["_id"]}, "finished")
         bil.queue_delete(fjob["_id"])
         fjob = bil.compute_runtime(fjob)
-        bil.insert_schedule_history(fjob)
-        if job_type not in ["period"]:
-            bil.delete_schedule(fjob["_id"])
+        bil.update_finished_schedule(fjob["_id"], fjob["run_time"], "finished")
         print "{} finished".format(fjob["spider_name"])
 
 

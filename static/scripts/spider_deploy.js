@@ -105,7 +105,6 @@ $(".btn-info").click(function(){
     }
 
     dingValue = $('input:radio:checked').val();
-    alert(dingValue);
     if(!dingValue){
 //            form_error();
         alert("定时任务不可以为空。");
@@ -126,7 +125,7 @@ $(".btn-info").click(function(){
     datas['project'] = projectValue;
     datas['spider'] = spiderValue;
     datas['period'] = dingValue;
-    datas['periodText'] = dingValue;
+    datas['job_type'] = dingValue;
     datas['servers'] = server_value;
     datas['action'] = "deploy"
     $(".deploy_progress").show();
